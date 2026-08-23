@@ -8,6 +8,7 @@ import { LocationGate } from '@/components/common/LocationGate';
 import { SpeedPill } from '@/components/common/SpeedPill';
 import { useCartStore } from '@/store/cart';
 import { useUiStore } from '@/store/ui';
+import { useHasMounted } from '@/lib/useHasMounted';
 import { formatCurrency } from '@quickbasket/utils';
 
 export function Header() {
@@ -16,8 +17,13 @@ export function Header() {
   const { openCartDrawer } = useUiStore();
   const [searchQuery, setSearchQuery] = useState('');
 
-  const totalItems = getTotalItems();
-  const itemTotal = getItemTotal();
+  // The cart persists to localStorage, so its contents only exist on the
+  // client. Render the SSR-safe empty state until mounted so the server and
+  // first client render match — otherwise the cart badge/total hydration
+  // mismatches and Next surfaces a "1 error" overlay on every reload.
+  const mounted = useHasMounted();
+  const totalItems = mounted ? getTotalItems() : 0;
+  const itemTotal = mounted ? getItemTotal() : 0;
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,7 +43,7 @@ export function Header() {
                 QB
               </div>
               <div className="flex flex-col">
-                <span className="font-heading font-black text-xl text-ink tracking-tight flex items-center gap-1">
+                <span className="font-display font-black text-xl text-ink tracking-tight flex items-center gap-1">
                   Quick<span className="text-basil">Basket</span>
                   <span className="text-[10px] bg-mango text-ink font-extrabold px-1.5 py-0.5 rounded-badge uppercase">
                     10 MIN
@@ -93,18 +99,19 @@ export function Header() {
             {/* Cart Trigger */}
             <button
               onClick={openCartDrawer}
-              className="flex items-center gap-2 bg-basil hover:bg-basil-hover text-white px-4 py-2 rounded-pill shadow-pill transition-all active:scale-95"
+              aria-label="Open cart"
+              className="flex items-center gap-2 bg-mango hover:bg-mango-hover text-ink px-4 py-2 rounded-pill shadow-sm transition-all active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-ink/40"
             >
               <div className="relative">
                 <ShoppingBag className="w-5 h-5" />
                 {totalItems > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-mango text-ink font-mono font-black text-[10px] w-4 h-4 rounded-full flex items-center justify-center shadow-sm">
+                  <span className="absolute -top-2 -right-2 bg-ink text-paper font-mono font-black text-[10px] w-4 h-4 rounded-full flex items-center justify-center shadow-sm">
                     {totalItems}
                   </span>
                 )}
               </div>
               <div className="hidden sm:flex flex-col text-left text-xs leading-tight">
-                <span className="font-bold text-basil-light">My Cart</span>
+                <span className="font-bold text-ink-700">My Cart</span>
                 <span className="font-mono font-extrabold">{formatCurrency(itemTotal)}</span>
               </div>
             </button>

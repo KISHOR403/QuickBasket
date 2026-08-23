@@ -13,16 +13,21 @@
     --font-noto: 'Noto Sans', sans-serif;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: #FCFCFA;
     color: #14231B;
-    font-family: var(--font-satoshi);
+    @apply font-sans;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-clash);
+    @apply font-display;
   }
 }
 
@@ -35,11 +40,46 @@
   scrollbar-width: none;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* Shimmer skeleton — a light band sweeps across a soft base, reading as
+   "content on its way" rather than a static grey block. Defined here (not only
+   in the Tailwind preset) so the keyframe ships even though .skeleton uses raw
+   CSS rather than the animate-shimmer utility. */
+@keyframes shimmer {
+  0% {
+    background-position: 150% 0;
+  }
+  100% {
+    background-position: -150% 0;
+  }
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+.skeleton {
+  background-color: #E4EBE6;
+  background-image: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 30%,
+    rgba(255, 255, 255, 0.7) 50%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Respect users who ask for less motion: kill sweeps, reveals and smooth
+   scroll, but leave everything legible in its final state. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .skeleton {
+    animation: none !important;
+  }
 }

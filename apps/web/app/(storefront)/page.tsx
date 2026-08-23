@@ -3,10 +3,11 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Zap, Store, Sparkles, ArrowRight, ShieldCheck, Clock, Flame } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Clock } from 'lucide-react';
 import { SpeedPill } from '@/components/common/SpeedPill';
 import { CategoryNav } from '@/components/common/CategoryNav';
 import { VendorBadge } from '@/components/common/VendorBadge';
+import { SectionHeader } from '@/components/common/SectionHeader';
 import { ProductGrid } from '@/components/product/ProductGrid';
 import { useProductsQuery, useVendorsQuery } from '@quickbasket/api-client';
 import { Button } from '@/components/ui/Button';
@@ -15,20 +16,19 @@ export default function HomePage() {
   const { data: products, isLoading: isProductsLoading } = useProductsQuery();
   const { data: vendors, isLoading: isVendorsLoading } = useVendorsQuery();
 
-  const expressProducts = products?.filter((p) => p.isExpress) || [];
   const organicProducts = products?.filter((p) => p.isOrganic) || [];
 
   return (
-    <div className="space-y-8">
+    <div className="pb-4">
       {/* Hero Banner */}
-      <section className="relative overflow-hidden rounded-card bg-gradient-to-br from-basil to-leaf text-white p-6 sm:p-8 shadow-float">
+      <section className="relative overflow-hidden rounded-card bg-gradient-to-br from-basil to-leaf text-white p-6 sm:p-8 shadow-float mt-4">
         <div className="absolute -right-10 -bottom-10 w-72 h-72 bg-mango/20 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="max-w-xl space-y-4">
             <SpeedPill minutes={10} variant="hero" />
 
-            <h1 className="text-2xl sm:text-4xl font-black font-heading tracking-tight leading-tight">
+            <h1 className="text-2xl sm:text-4xl font-black font-display tracking-tight leading-tight">
               Groceries & Local Kirana Favorites in{' '}
               <span className="text-mango underline decoration-mango decoration-4">10 Minutes</span>.
             </h1>
@@ -54,8 +54,9 @@ export default function HomePage() {
           <div className="hidden lg:block relative w-72 aspect-square rounded-card overflow-hidden border-2 border-white/20 shadow-lg">
             <Image
               src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80"
-              alt="Grocery delivery express"
+              alt="Fresh groceries packed for express delivery"
               fill
+              sizes="288px"
               className="object-cover"
               priority
             />
@@ -63,100 +64,88 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Quick Categories Nav Bar */}
-      <section className="space-y-2">
-        <div className="flex justify-between items-center">
-          <h2 className="text-lg font-extrabold text-ink flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-mango" /> Shop by Category
-          </h2>
+      {/* Quick Categories */}
+      <section className="py-12">
+        <SectionHeader eyebrow="Browse" title="Shop by Category" />
+        <div className="mt-6">
+          <CategoryNav />
         </div>
-        <CategoryNav />
       </section>
 
-      {/* Multi-Vendor Showcase Section */}
-      <section className="space-y-4 bg-surface-muted p-5 rounded-card border border-mist">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-          <div>
-            <span className="text-[10px] font-black uppercase tracking-wider text-basil">
-              MULTI-VENDOR NETWORK
-            </span>
-            <h2 className="text-lg font-extrabold text-ink flex items-center gap-2">
-              <Store className="w-5 h-5 text-basil" /> Local Stores & Specialty Shops
-            </h2>
-          </div>
-          <span className="text-xs text-ink-500 font-medium">
-            Supporting neighborhood businesses in your pincode
-          </span>
-        </div>
+      {/* Multi-Vendor Showcase */}
+      <section className="py-12">
+        <SectionHeader
+          eyebrow="Multi-Vendor Network"
+          title="Local Stores & Specialty Shops"
+          description="Supporting neighborhood businesses in your pincode."
+        />
 
-        {isVendorsLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map((n) => (
-              <div key={n} className="h-36 bg-mist rounded-card animate-pulse" />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {vendors?.map((vendor) => (
-              <div
-                key={vendor.id}
-                className="bg-surface rounded-card p-4 border border-mist shadow-card hover:shadow-md transition-all flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-2">
-                    <VendorBadge type={vendor.type} name={vendor.name} />
-                    <span className="text-[10px] font-extrabold bg-basil-light text-basil px-2 py-0.5 rounded-pill">
-                      ★ {vendor.rating}
-                    </span>
+        <div className="mt-6 bg-surface-muted p-5 rounded-card border border-mist">
+          {isVendorsLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[0, 1, 2, 3].map((n) => (
+                <div
+                  key={n}
+                  className="h-36 skeleton rounded-card animate-fadeIn"
+                  style={{ animationDelay: `${n * 60}ms` }}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {vendors?.map((vendor, i) => (
+                <div
+                  key={vendor.id}
+                  className="bg-surface rounded-card p-4 border border-mist shadow-card hover:shadow-float hover:-translate-y-0.5 hover:border-basil/30 transition-all duration-300 ease-smooth flex flex-col justify-between animate-fadeInUp"
+                  style={{ animationDelay: `${i * 60}ms` }}
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <VendorBadge type={vendor.type} name={vendor.name} />
+                      <span className="text-[10px] font-extrabold bg-basil-light text-basil px-2 py-0.5 rounded-pill">
+                        ★ {vendor.rating}
+                      </span>
+                    </div>
+                    <h3 className="text-xs font-bold text-ink line-clamp-1">{vendor.name}</h3>
+                    <p className="text-[11px] text-ink-400 mt-0.5">{vendor.address}</p>
                   </div>
-                  <h3 className="text-xs font-bold text-ink line-clamp-1">{vendor.name}</h3>
-                  <p className="text-[11px] text-ink-400 mt-0.5">{vendor.address}</p>
-                </div>
 
-                <div className="flex items-center justify-between pt-3 border-t border-mist/50 mt-3 text-xs font-bold font-mono text-ink-600">
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5 text-basil" /> {vendor.deliveryTimeMin} mins
-                  </span>
-                  <span className="text-basil">₹{vendor.deliveryFee} fee</span>
+                  <div className="flex items-center justify-between pt-3 border-t border-mist/50 mt-3 text-xs font-bold font-mono text-ink-600">
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3.5 h-3.5 text-basil" /> {vendor.deliveryTimeMin} mins
+                    </span>
+                    <span className="text-basil">₹{vendor.deliveryFee} fee</span>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
+        </div>
       </section>
 
       {/* Trending Bestsellers */}
-      <section className="space-y-4">
-        <div className="flex justify-between items-center">
-          <div>
-            <h2 className="text-lg font-extrabold text-ink flex items-center gap-2">
-              <Flame className="w-5 h-5 text-beet" /> Trending Bestsellers
-            </h2>
-            <p className="text-xs text-ink-500">Delivered to your doorstep in 10-12 minutes</p>
-          </div>
-          <Link href="/category/dairy-bread-eggs" className="text-xs font-bold text-basil hover:underline">
-            View All →
-          </Link>
+      <section className="py-12">
+        <SectionHeader
+          eyebrow="Trending Now"
+          title="Trending Bestsellers"
+          description="Delivered to your doorstep in 10-12 minutes."
+          action={{ label: 'View All', href: '/category/dairy-bread-eggs' }}
+        />
+        <div className="mt-6">
+          <ProductGrid products={products} isLoading={isProductsLoading} />
         </div>
-
-        <ProductGrid products={products} isLoading={isProductsLoading} />
       </section>
 
-      {/* Farm Fresh & Organic Shelf */}
-      <section className="space-y-4">
-        <div className="flex justify-between items-center">
-          <div>
-            <span className="text-[10px] font-black uppercase tracking-wider text-leaf">
-              DIRECT FROM FARMS
-            </span>
-            <h2 className="text-lg font-extrabold text-ink">Organic Vegetables & Farm Fruits</h2>
-          </div>
-          <Link href="/category/fresh-vegetables" className="text-xs font-bold text-leaf hover:underline">
-            Explore Farm Fresh →
-          </Link>
+      {/* Farm Fresh & Organic */}
+      <section className="py-12">
+        <SectionHeader
+          eyebrow="Direct from Farms"
+          title="Organic Vegetables & Farm Fruits"
+          action={{ label: 'Explore Farm Fresh', href: '/category/fresh-vegetables' }}
+        />
+        <div className="mt-6">
+          <ProductGrid products={organicProducts} isLoading={isProductsLoading} />
         </div>
-
-        <ProductGrid products={organicProducts} isLoading={isProductsLoading} />
       </section>
     </div>
   );

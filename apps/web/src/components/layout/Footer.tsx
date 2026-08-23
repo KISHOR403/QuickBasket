@@ -13,7 +13,7 @@ export function Footer() {
               <div className="w-8 h-8 rounded-card bg-basil text-white flex items-center justify-center font-extrabold text-lg">
                 QB
               </div>
-              <span className="font-heading font-extrabold text-xl text-white tracking-tight">
+              <span className="font-display font-extrabold text-xl text-white tracking-tight">
                 Quick<span className="text-leaf">Basket</span>
               </span>
             </div>

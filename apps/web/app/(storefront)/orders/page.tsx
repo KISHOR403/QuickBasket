@@ -15,8 +15,24 @@ export default function OrderHistoryPage() {
 
       {isLoading ? (
         <div className="space-y-4">
-          {[1, 2].map((n) => (
-            <div key={n} className="h-32 bg-mist rounded-card animate-pulse" />
+          {[0, 1, 2].map((n) => (
+            <div
+              key={n}
+              className="bg-surface rounded-card border border-mist p-5 shadow-card space-y-3 animate-fadeIn"
+              style={{ animationDelay: `${n * 80}ms` }}
+            >
+              <div className="flex justify-between items-start border-b border-mist pb-3">
+                <div className="space-y-2">
+                  <div className="skeleton h-4 w-32 rounded-full" />
+                  <div className="skeleton h-2.5 w-24 rounded-full" />
+                </div>
+                <div className="skeleton h-6 w-16 rounded-pill" />
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="skeleton h-3 w-40 rounded-full" />
+                <div className="skeleton h-4 w-14 rounded-full" />
+              </div>
+            </div>
           ))}
         </div>
       ) : !orders || orders.length === 0 ? (

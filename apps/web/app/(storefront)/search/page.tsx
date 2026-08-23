@@ -37,7 +37,18 @@ function SearchContent() {
 
 export default function SearchPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-xs font-bold text-ink-400">Loading search results...</div>}>
+    <Suspense
+      fallback={
+        <div className="space-y-6">
+          <div className="skeleton h-24 w-full rounded-card" />
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+            {[0, 1, 2, 3, 4].map((n) => (
+              <div key={n} className="skeleton h-56 w-full rounded-card" />
+            ))}
+          </div>
+        </div>
+      }
+    >
       <SearchContent />
     </Suspense>
   );

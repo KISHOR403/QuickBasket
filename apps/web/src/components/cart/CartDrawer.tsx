@@ -28,7 +28,7 @@ export function CartDrawer() {
   return (
     <div className="fixed inset-0 z-50 overflow-hidden bg-ink/60 backdrop-blur-sm animate-fadeIn">
       <div className="absolute inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-surface shadow-float border-l border-mist flex flex-col justify-between">
+        <div className="w-screen max-w-md bg-surface shadow-float border-l border-mist flex flex-col justify-between animate-slideInRight">
           {/* Header */}
           <div className="p-4 border-b border-mist flex items-center justify-between bg-surface">
             <div className="flex items-center gap-2">
@@ -78,7 +78,7 @@ export function CartDrawer() {
                 <p className="text-xs text-ink-500 max-w-xs">
                   Good food and daily essentials are just 10 minutes away!
                 </p>
-                <Button onClick={closeCartDrawer} variant="primary" size="md">
+                <Button onClick={closeCartDrawer} variant="mango" size="md">
                   Start Shopping
                 </Button>
               </div>

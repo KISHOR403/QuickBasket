@@ -6,13 +6,19 @@ import { usePathname } from 'next/navigation';
 import { Home, Grid, Search, ShoppingBag, User } from 'lucide-react';
 import { useCartStore } from '@/store/cart';
 import { useUiStore } from '@/store/ui';
+import { useHasMounted } from '@/lib/useHasMounted';
 import { cn } from '@/lib/utils';
 
 export function MobileNav() {
   const pathname = usePathname();
   const { getTotalItems } = useCartStore();
   const { openCartDrawer } = useUiStore();
-  const totalItems = getTotalItems();
+
+  // The cart persists to localStorage (client-only). Render the SSR-safe empty
+  // count until mounted so the first client render matches the server and the
+  // badge <span> doesn't hydration-mismatch (the "1 error" overlay).
+  const mounted = useHasMounted();
+  const totalItems = mounted ? getTotalItems() : 0;
 
   const navItems = [
     { label: 'Home', href: '/', icon: Home },
@@ -38,7 +44,7 @@ export function MobileNav() {
                 <div className="relative">
                   <Icon className="w-5 h-5" />
                   {item.badge ? (
-                    <span className="absolute -top-1.5 -right-2 bg-mango text-ink font-mono font-black text-[9px] w-4 h-4 rounded-full flex items-center justify-center">
+                    <span className="absolute -top-1.5 -right-2 bg-ink text-paper font-mono font-black text-[9px] w-4 h-4 rounded-full flex items-center justify-center">
                       {item.badge}
                     </span>
                   ) : null}

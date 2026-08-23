@@ -24,6 +24,7 @@ export function VariantPickerModal() {
               src={activeVariantProduct.images[0]}
               alt={activeVariantProduct.name}
               fill
+              sizes="64px"
               className="object-cover"
             />
           </div>

@@ -13,12 +13,17 @@ export function SpeedPill({ minutes = 12, variant = 'header', className }: Speed
     return (
       <div
         className={cn(
-          'inline-flex items-center gap-3 bg-gradient-to-r from-basil to-leaf text-white px-5 py-3 rounded-pill shadow-float animate-pulse',
+          'inline-flex items-center gap-3 bg-gradient-to-r from-basil to-leaf text-white px-5 py-3 rounded-pill shadow-float',
           className
         )}
       >
-        <div className="w-8 h-8 rounded-full bg-mango text-ink flex items-center justify-center font-black">
+        <div className="relative w-8 h-8 rounded-full bg-mango text-ink flex items-center justify-center font-black">
           <Zap className="w-5 h-5 fill-current" />
+          {/* Live indicator — one small, deliberate sign of "on the move" */}
+          <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-white opacity-60 animate-ping" />
+            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-white" />
+          </span>
         </div>
         <div>
           <div className="text-xs uppercase tracking-wider font-semibold text-basil-light">
