@@ -38,6 +38,7 @@ import {
 import { useLocationStore } from '@/store/location';
 import { useOrdersQuery } from '@quickbasket/api-client';
 import { formatCurrency } from '@quickbasket/utils';
+import { SupportChatModal } from '@/components/common/SupportChatModal';
 
 export default function AccountPage() {
   const { selectedAddress, pincode, area, city, setSelectedAddress } = useLocationStore();
@@ -60,6 +61,7 @@ export default function AccountPage() {
   const [isAddAddressOpen, setIsAddAddressOpen] = useState(false);
   const [isAddMoneyOpen, setIsAddMoneyOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [isSupportChatOpen, setIsSupportChatOpen] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
   const [walletBalance, setWalletBalance] = useState(245.0);
   const [topUpAmount, setTopUpAmount] = useState('500');
@@ -464,8 +466,8 @@ export default function AccountPage() {
               </div>
             </div>
             <button
-              onClick={() => alert('Opening QuickBasket Live Support Chat...')}
-              className="w-full text-center bg-surface border border-mist hover:bg-white text-ink text-xs font-bold py-2 rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5"
+              onClick={() => setIsSupportChatOpen(true)}
+              className="w-full text-center bg-surface border border-mist hover:bg-white text-ink text-xs font-bold py-2 rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 hover:border-basil/40 active:scale-95"
             >
               <span>Chat with Support</span>
               <ArrowUpRight className="w-3.5 h-3.5 text-basil" />
@@ -1292,6 +1294,13 @@ export default function AccountPage() {
           </div>
         </div>
       )}
+      {/* ========================================================================= */}
+      {/* MODAL: 24x7 CUSTOMER CARE AI SUPPORT CHAT */}
+      {/* ========================================================================= */}
+      <SupportChatModal
+        isOpen={isSupportChatOpen}
+        onClose={() => setIsSupportChatOpen(false)}
+      />
     </div>
   );
 }
