@@ -466,6 +466,7 @@ export default function AccountPage() {
               </div>
             </div>
             <button
+              type="button"
               onClick={() => setIsSupportChatOpen(true)}
               className="w-full text-center bg-surface border border-mist hover:bg-white text-ink text-xs font-bold py-2 rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 hover:border-basil/40 active:scale-95"
             >

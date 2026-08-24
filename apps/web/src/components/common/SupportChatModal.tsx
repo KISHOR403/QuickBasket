@@ -61,12 +61,12 @@ export function SupportChatModal({ isOpen, onClose, initialTopic }: SupportChatM
 
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to bottom on new messages
+  // Auto-scroll ONLY internal chat container on new messages (prevents window scrolling)
   useEffect(() => {
-    if (isOpen) {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (isOpen && chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [messages, isTyping, isOpen]);
 
@@ -243,7 +243,7 @@ export function SupportChatModal({ isOpen, onClose, initialTopic }: SupportChatM
         {/* ========================================================================= */}
         {/* CHAT MESSAGES BODY */}
         {/* ========================================================================= */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-paper/60">
+        <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-paper/60">
           {/* Quick Topic Suggestions */}
           <div className="space-y-1.5 pt-1 pb-2">
             <p className="text-[11px] font-bold text-ink-400 uppercase tracking-wider">Quick Suggestions:</p>
@@ -378,8 +378,6 @@ export function SupportChatModal({ isOpen, onClose, initialTopic }: SupportChatM
               <span className="font-medium animate-pulse">QuickBasket Support is typing...</span>
             </div>
           )}
-
-          <div ref={messagesEndRef} />
         </div>
 
         {/* ========================================================================= */}
