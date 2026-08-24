@@ -19,13 +19,15 @@ export function QtyStepper({
   size = 'md',
   className,
 }: QtyStepperProps) {
+  // When used standalone (e.g. on product detail page), still show ADD button
+  // for quantity 0.  In ProductCard, the parent now handles the ADD state.
   if (quantity === 0) {
     return (
       <button
         onClick={onIncrement}
         aria-label="Add to cart"
         className={cn(
-          'w-full bg-mango text-ink hover:bg-mango-hover font-bold rounded-pill transition-all duration-200 shadow-sm text-xs py-1.5 px-4 uppercase tracking-wider flex items-center justify-center gap-1 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/40',
+          'w-full bg-mango text-ink hover:bg-mango-hover font-extrabold rounded-pill transition-all duration-200 shadow-sm text-xs py-1.5 px-4 uppercase tracking-wider flex items-center justify-center gap-1 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/40',
           size === 'sm' && 'py-1 px-3 text-[11px]',
           className
         )}

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Phone, ShieldCheck, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { User, ShieldCheck, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 
@@ -35,30 +35,31 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-surface-muted flex flex-col justify-center items-center p-4">
       <div className="bg-surface rounded-card border border-mist p-8 max-w-md w-full shadow-float space-y-6">
-        <div className="text-center space-y-2">
-          <div className="w-12 h-12 bg-basil text-white font-extrabold text-2xl rounded-card flex items-center justify-center mx-auto shadow-pill">
-            QB
+        {/* Avatar icon */}
+        <div className="text-center space-y-3">
+          <div className="w-16 h-16 bg-basil-light rounded-full flex items-center justify-center mx-auto">
+            <User className="w-8 h-8 text-basil" />
           </div>
           <h1 className="text-2xl font-black text-ink">Welcome to QuickBasket</h1>
-          <p className="text-xs text-ink-500">
-            India&apos;s 10-Minute Grocery & Multi-Vendor Delivery App
+          <p className="text-sm text-ink-500">
+            Log in or sign up to continue
           </p>
         </div>
 
         {step === 'phone' ? (
           <form onSubmit={handleSendOtp} className="space-y-4">
             <Input
-              label="Mobile Number"
-              placeholder="e.g. 9876543210"
+              label="MOBILE NUMBER"
+              placeholder="Enter your 10 digit number"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               maxLength={10}
               error={error}
-              leftIcon={<span className="text-xs font-bold font-mono text-ink-500">+91</span>}
+              leftIcon={<span className="text-sm font-bold font-mono text-ink-500">+91</span>}
             />
 
-            <Button type="submit" variant="mango" className="w-full font-black py-3">
-              Continue with OTP <ArrowRight className="w-4 h-4 ml-1" />
+            <Button type="submit" variant="mango" className="w-full font-black py-3.5 text-base rounded-pill">
+              Get OTP <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </form>
         ) : (
@@ -79,15 +80,17 @@ export default function LoginPage() {
               error={error}
             />
 
-            <Button type="submit" variant="primary" className="w-full font-black py-3">
+            <Button type="submit" variant="primary" className="w-full font-black py-3.5 text-base">
               Verify & Login
             </Button>
           </form>
         )}
 
-        <div className="pt-4 border-t border-mist text-center text-[11px] text-ink-400 flex items-center justify-center gap-1">
-          <ShieldCheck className="w-4 h-4 text-leaf" />
-          <span>By continuing, you agree to QuickBasket Terms & Privacy Policy</span>
+        <div className="pt-4 border-t border-mist text-center text-xs text-ink-400">
+          By continuing, you agree to our{' '}
+          <span className="text-basil font-semibold hover:underline cursor-pointer">Terms of Service</span>
+          {' & '}
+          <span className="text-basil font-semibold hover:underline cursor-pointer">Privacy Policy</span>
         </div>
       </div>
     </div>

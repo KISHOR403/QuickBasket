@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ShoppingBag, ArrowRight, ShieldCheck, Tag } from 'lucide-react';
+import { ShoppingBag, ArrowRight, Truck, Tag } from 'lucide-react';
 import { useCartStore } from '@/store/cart';
 import { formatCurrency } from '@quickbasket/utils';
 import { CartItemRow } from '@/components/cart/CartItemRow';
@@ -40,55 +40,73 @@ export default function CartPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-black text-ink">Shopping Cart ({totalItems} items)</h1>
+        <h1 className="text-2xl font-black text-ink">Your Cart</h1>
         <button onClick={clearCart} className="text-xs font-bold text-beet hover:underline">
           Clear All
         </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2 bg-surface rounded-card border border-mist p-4 shadow-card space-y-2">
-          {items.map((item) => (
-            <CartItemRow key={`${item.productId}-${item.variantId}`} item={item} />
-          ))}
+        <div className="md:col-span-2 space-y-4">
+          {/* Delivery estimate banner */}
+          <div className="bg-sage border border-sage-dark rounded-card p-3.5 flex items-center gap-3 text-sm text-ink-700">
+            <Truck className="w-5 h-5 text-basil shrink-0" />
+            <span>
+              Arriving in <span className="font-extrabold text-basil">12 minutes</span> to your saved address.
+            </span>
+          </div>
+
+          {/* Cart items */}
+          <div className="bg-surface rounded-card border border-mist p-4 shadow-card space-y-2">
+            {items.map((item) => (
+              <CartItemRow key={`${item.productId}-${item.variantId}`} item={item} />
+            ))}
+          </div>
         </div>
 
         {/* Bill Details */}
         <div className="bg-surface rounded-card border border-mist p-5 shadow-card space-y-4 h-fit">
-          <h3 className="text-sm font-extrabold text-ink border-b border-mist pb-2">Bill Summary</h3>
+          <h3 className="text-base font-extrabold text-ink">Bill Details</h3>
 
-          {savings > 0 && (
-            <div className="bg-leaf-light text-leaf p-2.5 rounded-badge text-xs font-bold flex items-center gap-2">
-              <Tag className="w-4 h-4" />
-              <span>Saved {formatCurrency(savings)} on MRP</span>
-            </div>
-          )}
-
-          <div className="space-y-2 text-xs text-ink-700 font-medium">
+          <div className="space-y-3 text-sm text-ink-700 font-medium">
             <div className="flex justify-between">
               <span>Item Total</span>
               <span className="font-mono font-bold">{formatCurrency(itemTotal)}</span>
             </div>
             <div className="flex justify-between">
-              <span>Delivery Fee</span>
-              <span className="font-mono font-bold">
-                {deliveryFee === 0 ? <span className="text-leaf">FREE</span> : formatCurrency(deliveryFee)}
-              </span>
+              <span>Handling Fee</span>
+              <span className="font-mono font-bold">{formatCurrency(handlingFee)}</span>
             </div>
             <div className="flex justify-between">
-              <span>Handling Fee</span>
-              <span className="font-mono">{formatCurrency(handlingFee)}</span>
+              <span>Delivery Fee</span>
+              <span className="font-mono font-bold">
+                {deliveryFee === 0 ? (
+                  <span className="flex items-center gap-1.5">
+                    <span className="text-ink-400 line-through">{formatCurrency(40)}</span>
+                    <span className="text-leaf font-extrabold">FREE</span>
+                  </span>
+                ) : (
+                  formatCurrency(deliveryFee)
+                )}
+              </span>
             </div>
-            <div className="flex justify-between text-base font-black text-ink pt-3 border-t border-mist">
-              <span>Grand Total</span>
-              <span className="font-mono text-basil">{formatCurrency(grandTotal)}</span>
+            <div className="flex justify-between text-lg font-black text-ink pt-3 border-t border-mist">
+              <span>To Pay</span>
+              <span className="font-mono">{formatCurrency(grandTotal)}</span>
             </div>
           </div>
 
+          {savings > 0 && (
+            <div className="bg-beet-light text-beet p-3 rounded-card text-xs font-bold flex items-center gap-2">
+              <Tag className="w-4 h-4" />
+              <span>You saved {formatCurrency(savings)} on this order!</span>
+            </div>
+          )}
+
           <Link href="/checkout" className="block">
-            <Button variant="mango" className="w-full justify-between py-3">
-              <span>Proceed to Checkout</span>
-              <ArrowRight className="w-4 h-4" />
+            <Button variant="mango" className="w-full justify-between py-3.5 text-base font-black rounded-pill">
+              <span>Proceed to Pay</span>
+              <ArrowRight className="w-5 h-5" />
             </Button>
           </Link>
         </div>

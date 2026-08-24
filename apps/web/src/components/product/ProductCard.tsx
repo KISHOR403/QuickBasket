@@ -84,7 +84,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="text-[11px] font-medium text-ink-500 mb-3">{variant.name}</div>
       </div>
 
-      {/* Bottom: price + mango ADD / qty stepper */}
+      {/* Bottom: price + orange ADD / qty stepper */}
       <div className="flex items-center justify-between gap-2 pt-2 border-t border-mist/50 mt-auto">
         <div className="flex items-baseline gap-1 font-mono">
           <span className="text-sm font-black text-ink">{formatCurrency(variant.price)}</span>
@@ -97,12 +97,21 @@ export function ProductCard({ product }: ProductCardProps) {
 
         {/* Fixed-width slot so ADD → stepper doesn't shift the layout */}
         <div className="w-[92px] shrink-0">
-          <QtyStepper
-            className="w-full"
-            quantity={quantity}
-            onIncrement={() => addItem(product, variant, 1)}
-            onDecrement={() => updateQuantity(product.id, variant.id, quantity - 1)}
-          />
+          {quantity === 0 ? (
+            <button
+              onClick={() => addItem(product, variant, 1)}
+              className="w-full bg-mango hover:bg-mango-hover text-ink text-xs font-extrabold uppercase py-2 px-4 rounded-pill shadow-sm transition-all active:scale-95 tracking-wider"
+            >
+              ADD
+            </button>
+          ) : (
+            <QtyStepper
+              className="w-full"
+              quantity={quantity}
+              onIncrement={() => addItem(product, variant, 1)}
+              onDecrement={() => updateQuantity(product.id, variant.id, quantity - 1)}
+            />
+          )}
         </div>
       </div>
     </div>

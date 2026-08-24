@@ -7,7 +7,11 @@ import { useUiStore } from '@/store/ui';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 
-export function LocationGate() {
+interface LocationGateProps {
+  variant?: 'default' | 'header';
+}
+
+export function LocationGate({ variant = 'default' }: LocationGateProps) {
   const { pincode, area, isServiceable, setPincodeLocation } = useLocationStore();
   const { isLocationModalOpen, openLocationModal, closeLocationModal } = useUiStore();
   const [inputPincode, setInputPincode] = useState('');
@@ -33,6 +37,21 @@ export function LocationGate() {
     setErrorMsg('');
     closeLocationModal();
   };
+
+  // Compact inline variant for the dark green header
+  if (variant === 'header') {
+    return (
+      <button
+        onClick={openLocationModal}
+        className="flex items-center gap-1 text-left group"
+      >
+        <span className="font-bold text-white truncate max-w-[160px]">
+          {area}, {pincode}
+        </span>
+        <ChevronDown className="w-3 h-3 text-white/60 group-hover:text-white group-hover:translate-y-0.5 transition-all" />
+      </button>
+    );
+  }
 
   return (
     <>

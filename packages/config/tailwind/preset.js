@@ -22,18 +22,30 @@ module.exports = {
           light: '#E7F5EE',
           dark: '#084F2F',
         },
+        header: {
+          DEFAULT: '#0E6B3A',
+          dark: '#0A5A30',
+        },
         leaf: {
           DEFAULT: '#17A44C',
           light: '#EBF8F0',
         },
         mango: {
-          DEFAULT: '#FF9E2C',
-          hover: '#E58816',
+          DEFAULT: '#F5A623',
+          hover: '#E09010',
           light: '#FFF5E6',
+        },
+        brand: {
+          DEFAULT: '#D4A017',
+          light: '#F0D97C',
         },
         beet: {
           DEFAULT: '#8A2D5B',
           light: '#F8E8F0',
+        },
+        sage: {
+          DEFAULT: '#E8F5E9',
+          dark: '#C8E6C9',
         },
         paper: '#FCFCFA',
         mist: '#EEF1EC',
