@@ -13,7 +13,7 @@ import { formatCurrency } from '@quickbasket/utils';
 export function Header() {
   const router = useRouter();
   const { getTotalItems, getItemTotal } = useCartStore();
-  const { openCartDrawer } = useUiStore();
+  const { openCartDrawer, openLocationModal } = useUiStore();
   const [searchQuery, setSearchQuery] = useState('');
 
   // The cart persists to localStorage, so its contents only exist on the
@@ -74,7 +74,13 @@ export function Header() {
             </div>
 
             {/* Location icon */}
-            <button className="hidden md:flex p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors">
+            <button
+              type="button"
+              onClick={openLocationModal}
+              className="hidden md:flex p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors active:scale-95 cursor-pointer"
+              aria-label="Change delivery location"
+              title="Change Delivery Location"
+            >
               <MapPin className="w-5 h-5" />
             </button>
 

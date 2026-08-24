@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { MapPin, ChevronDown, CheckCircle2, AlertCircle, Navigation } from 'lucide-react';
+import { MapPin, ChevronDown, CheckCircle2, AlertCircle, Navigation, X } from 'lucide-react';
 import { useLocationStore } from '@/store/location';
 import { useUiStore } from '@/store/ui';
 import { Button } from '@/components/ui/Button';
@@ -38,43 +38,42 @@ export function LocationGate({ variant = 'default' }: LocationGateProps) {
     closeLocationModal();
   };
 
-  // Compact inline variant for the dark green header
-  if (variant === 'header') {
-    return (
-      <button
-        onClick={openLocationModal}
-        className="flex items-center gap-1 text-left group"
-      >
-        <span className="font-bold text-white truncate max-w-[160px]">
-          {area}, {pincode}
-        </span>
-        <ChevronDown className="w-3 h-3 text-white/60 group-hover:text-white group-hover:translate-y-0.5 transition-all" />
-      </button>
-    );
-  }
-
   return (
     <>
-      {/* Header Button Trigger */}
-      <button
-        onClick={openLocationModal}
-        className="flex items-center gap-2 text-left p-1.5 hover:bg-mist/60 rounded-card transition-colors group"
-      >
-        <div className="w-9 h-9 rounded-full bg-basil-light text-basil flex items-center justify-center group-hover:scale-105 transition-transform">
-          <MapPin className="w-5 h-5" />
-        </div>
-        <div className="flex flex-col">
-          <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-ink-500">
-            <span>Delivering to</span>
-            <ChevronDown className="w-3.5 h-3.5 text-basil group-hover:translate-y-0.5 transition-transform" />
+      {/* Header / Default Button Trigger */}
+      {variant === 'header' ? (
+        <button
+          type="button"
+          onClick={openLocationModal}
+          className="flex items-center gap-1 text-left group cursor-pointer"
+        >
+          <span className="font-bold text-white truncate max-w-[160px]">
+            {area}, {pincode}
+          </span>
+          <ChevronDown className="w-3 h-3 text-white/60 group-hover:text-white group-hover:translate-y-0.5 transition-all" />
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={openLocationModal}
+          className="flex items-center gap-2 text-left p-1.5 hover:bg-mist/60 rounded-card transition-colors group cursor-pointer"
+        >
+          <div className="w-9 h-9 rounded-full bg-basil-light text-basil flex items-center justify-center group-hover:scale-105 transition-transform">
+            <MapPin className="w-5 h-5" />
           </div>
-          <div className="text-sm font-extrabold text-ink truncate max-w-[200px]">
-            {area} ({pincode})
+          <div className="flex flex-col">
+            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-ink-500">
+              <span>Delivering to</span>
+              <ChevronDown className="w-3.5 h-3.5 text-basil group-hover:translate-y-0.5 transition-transform" />
+            </div>
+            <div className="text-sm font-extrabold text-ink truncate max-w-[200px]">
+              {area} ({pincode})
+            </div>
           </div>
-        </div>
-      </button>
+        </button>
+      )}
 
-      {/* Location Modal */}
+      {/* Location Modal Portal */}
       {isLocationModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/60 backdrop-blur-sm animate-fadeIn">
           <div className="bg-surface rounded-card max-w-md w-full p-6 shadow-float border border-mist relative">
@@ -83,10 +82,11 @@ export function LocationGate({ variant = 'default' }: LocationGateProps) {
                 <MapPin className="w-5 h-5 text-basil" /> Select Delivery Location
               </h3>
               <button
+                type="button"
                 onClick={closeLocationModal}
-                className="text-ink-400 hover:text-ink text-xl font-bold p-1"
+                className="text-ink-400 hover:text-ink text-xl font-bold p-1 rounded-full hover:bg-mist transition-colors"
               >
-                ✕
+                <X className="w-5 h-5" />
               </button>
             </div>
 
@@ -117,7 +117,7 @@ export function LocationGate({ variant = 'default' }: LocationGateProps) {
             </form>
 
             <div className="mt-6 pt-4 border-t border-mist">
-              <div className="text-xs font-bold text-ink-500 mb-2">QUICK POPULAR PINCODES</div>
+              <div className="text-xs font-bold text-ink-500 mb-2 uppercase tracking-wider">QUICK POPULAR PINCODES</div>
               <div className="flex flex-wrap gap-2">
                 {[
                   { code: '110001', label: 'Connaught Place' },
@@ -126,11 +126,12 @@ export function LocationGate({ variant = 'default' }: LocationGateProps) {
                 ].map((item: { code: string; label: string }) => (
                   <button
                     key={item.code}
+                    type="button"
                     onClick={() => {
                       setPincodeLocation(item.code, item.label, 'Delhi NCR');
                       closeLocationModal();
                     }}
-                    className="text-xs bg-mist/70 hover:bg-basil-light hover:text-basil px-3 py-1.5 rounded-pill transition-colors font-medium"
+                    className="text-xs bg-mist/70 hover:bg-basil-light hover:text-basil px-3 py-1.5 rounded-pill transition-colors font-medium cursor-pointer"
                   >
                     {item.code} - {item.label}
                   </button>
