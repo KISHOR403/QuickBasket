@@ -1,13 +1,10 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { ProductGrid } from '@/components/product/ProductGrid';
 import { useProductsQuery } from '@quickbasket/api-client';
-import { Button } from '@/components/ui/Button';
+import { HeroCarousel } from '@/components/home/HeroCarousel';
 
 export default function HomePage() {
   const { data: products, isLoading: isProductsLoading } = useProductsQuery();
@@ -16,43 +13,8 @@ export default function HomePage() {
 
   return (
     <div className="pb-4 space-y-10">
-      {/* Hero Banner — Full-width image background matching Stitch */}
-      <section className="relative overflow-hidden rounded-card min-h-[320px] flex items-end">
-        {/* Background image */}
-        <Image
-          src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1400&q=80"
-          alt="Farm fresh vegetables"
-          fill
-          sizes="(max-width: 768px) 100vw, 900px"
-          className="object-cover"
-          priority
-        />
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-
-        {/* Content */}
-        <div className="relative z-10 p-6 sm:p-8 w-full space-y-3">
-          <span className="inline-block bg-mango text-ink text-[11px] font-extrabold uppercase px-3 py-1 rounded-pill tracking-wider">
-            Fresh Arrivals
-          </span>
-
-          <h1 className="text-2xl sm:text-4xl font-black font-display text-white tracking-tight leading-tight max-w-lg">
-            Farm Fresh,<br />
-            In 10 Minutes.
-          </h1>
-
-          <p className="text-sm text-white/80 leading-relaxed max-w-md">
-            Stock up on daily essentials sourced directly from local farms. Handpicked quality guaranteed.
-          </p>
-
-          <Link href="/category/fresh-vegetables">
-            <Button variant="primary" size="md" className="font-extrabold gap-2 mt-2">
-              <span>Shop Vegetables</span>
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-          </Link>
-        </div>
-      </section>
+      {/* Dynamic Hero Carousel Banner (Auto-rotating background images & matching text) */}
+      <HeroCarousel />
 
       {/* Trending Bestsellers */}
       <section>
