@@ -87,12 +87,12 @@ export function HeroCarousel() {
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
-  // Auto-slide effect every 4.5 seconds
+  // Auto-slide effect every 3.5 seconds
   useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % HERO_SLIDES.length);
-    }, 4500);
+    }, 3500);
 
     return () => clearInterval(interval);
   }, [isPaused]);
