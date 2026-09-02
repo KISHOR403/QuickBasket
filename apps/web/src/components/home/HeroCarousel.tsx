@@ -64,7 +64,7 @@ const HERO_SLIDES: Slide[] = [
     headline: 'Midnight Snacks\n& Cold Drinks.',
     subtitle: 'Crave-worthy chips, chocolates, artisanal beverages & snacks delivered 24x7 in minutes.',
     ctaText: 'Order Snacks & Drinks',
-    ctaHref: '/category/munchies',
+    ctaHref: '/category/snacks-munchies',
     imageUrl: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80',
     imageAlt: 'Snacks, chips, and drinks',
   },
