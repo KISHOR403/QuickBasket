@@ -5,6 +5,11 @@ import { SectionHeader } from '@/components/common/SectionHeader';
 import { ProductGrid } from '@/components/product/ProductGrid';
 import { useProductsQuery } from '@quickbasket/api-client';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
+import { CategoryGrid } from '@/components/home/CategoryGrid';
+import { PromoBanners } from '@/components/home/PromoBanners';
+import { WhyQuickBasket } from '@/components/home/WhyQuickBasket';
+import { Testimonials } from '@/components/home/Testimonials';
+import { DownloadApp } from '@/components/home/DownloadApp';
 
 export default function HomePage() {
   const { data: products, isLoading: isProductsLoading } = useProductsQuery();
@@ -15,6 +20,9 @@ export default function HomePage() {
     <div className="pb-4 space-y-10">
       {/* Dynamic Hero Carousel Banner (Auto-rotating background images & matching text) */}
       <HeroCarousel />
+
+      {/* Shop by Category — icon grid */}
+      <CategoryGrid />
 
       {/* Trending Bestsellers */}
       <section>
@@ -29,6 +37,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Deals & Offers — promotional banners */}
+      <PromoBanners />
+
       {/* Farm Fresh & Organic */}
       <section>
         <SectionHeader
@@ -40,6 +51,15 @@ export default function HomePage() {
           <ProductGrid products={organicProducts} isLoading={isProductsLoading} />
         </div>
       </section>
+
+      {/* Why QuickBasket — USP pillars */}
+      <WhyQuickBasket />
+
+      {/* Customer Testimonials */}
+      <Testimonials />
+
+      {/* Download the App CTA */}
+      <DownloadApp />
     </div>
   );
 }
