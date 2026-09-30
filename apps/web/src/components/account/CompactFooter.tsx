@@ -64,22 +64,19 @@ export function CompactFooter() {
               Company
             </Link>
             <span className="text-ink/20">•</span>
-            <button
-              onClick={() => alert('Support: 1800-QUICK-GROCERY')}
-              className="hover:text-ink transition-colors"
-            >
+            <Link href="/support" className="hover:text-ink transition-colors">
               Support
-            </button>
+            </Link>
             <span className="text-ink/20">•</span>
             <Link href="/category/dairy-bread-eggs" className="hover:text-ink transition-colors">
               Shop
             </Link>
             <span className="text-ink/20">•</span>
-            <Link href="/about" className="hover:text-ink transition-colors">
+            <Link href="/privacy" className="hover:text-ink transition-colors">
               Privacy
             </Link>
             <span className="text-ink/20">•</span>
-            <Link href="/about" className="hover:text-ink transition-colors">
+            <Link href="/terms" className="hover:text-ink transition-colors">
               Terms
             </Link>
           </div>

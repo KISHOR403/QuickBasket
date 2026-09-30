@@ -59,6 +59,10 @@ apps/web/
 | `/orders` | `(storefront)` | User order history with past receipts. |
 | `/orders/[orderId]` | `(storefront)` | Live tracking screen showing real-time rider assignment, status milestones, and ETA countdown. |
 | `/account` | `(storefront)` | Address book management with geolocation support and user preferences. |
+| `/about` | `(storefront)` | Company story, mission, 10-minute delivery model, farm partners, and core values. |
+| `/privacy` | `(storefront)` | Privacy Policy: data protection, location access, payment security, and grievance contacts. |
+| `/terms` | `(storefront)` | Terms of Service: 10-minute SLA terms, pricing, cancellation & instant refund rules. |
+| `/support` | `(storefront)` | Customer Help Center: FAQs, order resolution, toll-free helpline, WhatsApp, and inquiry form. |
 | `/login` | `(auth)` | Phone number authentication with simulated 4-digit OTP verification. |
 | `/admin` | Root route | Vendor & Dark store administration portal displaying active SKUs, daily order volumes, and SLA metrics. |
 
