@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Search, ShoppingCart, User, MapPin, Clock } from 'lucide-react';
+import { Search, ShoppingBag, User, MapPin, Heart } from 'lucide-react';
 import { LocationGate } from '@/components/common/LocationGate';
 import { useCartStore } from '@/store/cart';
 import { useUiStore } from '@/store/ui';
@@ -15,14 +15,17 @@ export function Header() {
   const { getTotalItems, getItemTotal } = useCartStore();
   const { openCartDrawer, openLocationModal } = useUiStore();
   const [searchQuery, setSearchQuery] = useState('');
+  const [scrolled, setScrolled] = useState(false);
 
-  // The cart persists to localStorage, so its contents only exist on the
-  // client. Render the SSR-safe empty state until mounted so the server and
-  // first client render match — otherwise the cart badge/total hydration
-  // mismatches and Next surfaces a "1 error" overlay on every reload.
   const mounted = useHasMounted();
   const totalItems = mounted ? getTotalItems() : 0;
   const itemTotal = mounted ? getItemTotal() : 0;
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handler, { passive: true });
+    return () => window.removeEventListener('scroll', handler);
+  }, []);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,104 +35,109 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-header shadow-md">
+    <header
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ease-smooth ${
+        scrolled
+          ? 'glass border-b border-black/[0.04] shadow-glass'
+          : 'bg-transparent'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 gap-4">
-          {/* Logo & Brand */}
-          <div className="flex items-center gap-4 shrink-0">
-            <Link href="/" className="flex items-center gap-2 group">
-              <span className="font-display font-black text-2xl text-brand tracking-tight">
-                QuickBasket
-              </span>
-            </Link>
-
-            {/* Location - Desktop */}
-            <div className="hidden md:flex items-center gap-1.5 text-white/90 text-xs font-medium">
-              <MapPin className="w-4 h-4 text-brand" />
-              <span className="text-white/60">Delivering to</span>
-              <LocationGate variant="header" />
+        <div className="flex items-center justify-between h-16 md:h-18 gap-3">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-1.5 shrink-0 group">
+            <div className="w-8 h-8 rounded-xl bg-basil flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+              <span className="text-white font-display font-bold text-sm">Q</span>
             </div>
-          </div>
+            <span className="font-display font-bold text-lg tracking-tight text-ink hidden sm:inline">
+              Quick<span className="text-basil">Basket</span>
+            </span>
+          </Link>
 
-          {/* Search bar - Desktop */}
-          <form onSubmit={handleSearchSubmit} className="flex-1 max-w-lg hidden md:block">
-            <div className="relative">
+          {/* Search — Desktop */}
+          <form onSubmit={handleSearchSubmit} className="flex-1 max-w-md hidden md:block">
+            <div className="relative group">
               <input
                 type="text"
-                placeholder="Search for 'paneer'..."
+                placeholder="Search for groceries, brands..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white/10 focus:bg-white/20 border border-white/15 focus:border-white/30 rounded-pill py-2.5 pl-10 pr-4 text-sm font-medium text-white transition-all placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/20"
+                className="w-full bg-ink/[0.04] hover:bg-ink/[0.06] focus:bg-white border border-transparent focus:border-ink/[0.08] rounded-2xl py-2.5 pl-11 pr-4 text-sm font-medium text-ink transition-all placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-basil/10 focus:shadow-glass"
               />
-              <Search className="w-4 h-4 text-white/50 absolute left-3.5 top-3" />
+              <Search className="w-4.5 h-4.5 text-ink-400 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors group-focus-within:text-basil" />
             </div>
           </form>
 
-          {/* Right Action Icons */}
-          <div className="flex items-center gap-3">
-            {/* Speed Pill */}
-            <div className="hidden lg:flex items-center gap-1.5 bg-mango text-ink px-3.5 py-2 rounded-pill text-xs font-extrabold shadow-sm">
-              <Clock className="w-3.5 h-3.5" />
-              <span>Delivered in 12 min</span>
-            </div>
-
-            {/* Location icon */}
+          {/* Right Actions */}
+          <div className="flex items-center gap-1">
+            {/* Location */}
             <button
               type="button"
               onClick={openLocationModal}
-              className="hidden md:flex p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors active:scale-95 cursor-pointer"
+              className="hidden lg:flex items-center gap-1.5 px-3 py-2 rounded-xl hover:bg-ink/[0.04] transition-colors text-sm group cursor-pointer"
               aria-label="Change delivery location"
-              title="Change Delivery Location"
             >
-              <MapPin className="w-5 h-5" />
+              <MapPin className="w-4 h-4 text-basil" />
+              <span className="text-ink-500 text-xs">Delivering to</span>
+              <LocationGate variant="header" />
             </button>
+
+            {/* Wishlist */}
+            <Link
+              href="/account"
+              className="p-2.5 rounded-xl hover:bg-ink/[0.04] text-ink-500 hover:text-ink transition-colors hidden md:flex"
+              aria-label="Wishlist"
+            >
+              <Heart className="w-5 h-5" />
+            </Link>
 
             {/* Account */}
             <Link
               href="/account"
-              className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors"
+              className="p-2.5 rounded-xl hover:bg-ink/[0.04] text-ink-500 hover:text-ink transition-colors"
               aria-label="Account"
             >
               <User className="w-5 h-5" />
             </Link>
 
-            {/* Cart Trigger */}
+            {/* Cart */}
             <button
               onClick={openCartDrawer}
               aria-label="Open cart"
-              className="flex items-center gap-2 bg-header-dark hover:bg-basil-dark text-white px-4 py-2 rounded-pill shadow-sm transition-all active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 border border-white/15"
+              className="relative flex items-center gap-2 bg-ink hover:bg-ink-700 text-white pl-3 pr-4 py-2.5 rounded-2xl transition-all active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-basil/30 ml-1"
             >
               <div className="relative">
-                <ShoppingCart className="w-5 h-5" />
+                <ShoppingBag className="w-4.5 h-4.5" />
                 {totalItems > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-mango text-ink font-mono font-black text-[10px] w-4 h-4 rounded-full flex items-center justify-center shadow-sm">
+                  <span className="absolute -top-1.5 -right-2 bg-basil text-white font-mono font-bold text-[9px] w-4 h-4 rounded-full flex items-center justify-center animate-countUp">
                     {totalItems}
                   </span>
                 )}
               </div>
-              <span className="hidden sm:inline font-mono font-extrabold text-sm">
-                {formatCurrency(itemTotal)}
-              </span>
+              {totalItems > 0 && (
+                <span className="text-xs font-mono font-bold hidden sm:inline">
+                  {formatCurrency(itemTotal)}
+                </span>
+              )}
+              {totalItems === 0 && (
+                <span className="text-xs font-medium hidden sm:inline">Cart</span>
+              )}
             </button>
           </div>
         </div>
 
-        {/* Mobile Search & Location sub-row */}
-        <div className="md:hidden pb-3 pt-1 flex flex-col gap-2 border-t border-white/10">
-          <div className="flex items-center gap-1.5 text-white/90 text-xs font-medium">
-            <MapPin className="w-3.5 h-3.5 text-brand" />
-            <LocationGate variant="header" />
-          </div>
-          <form onSubmit={handleSearchSubmit} className="w-full">
+        {/* Mobile Search */}
+        <div className="md:hidden pb-3 -mt-1">
+          <form onSubmit={handleSearchSubmit}>
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search products, brands..."
+                placeholder="Search groceries..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white/10 border border-white/15 focus:border-white/30 rounded-pill py-2 pl-9 pr-4 text-xs font-medium text-white focus:outline-none placeholder:text-white/50"
+                className="w-full bg-ink/[0.04] border border-transparent rounded-xl py-2.5 pl-10 pr-4 text-sm font-medium text-ink focus:outline-none placeholder:text-ink-400 focus:bg-white focus:border-ink/[0.08] focus:ring-2 focus:ring-basil/10 transition-all"
               />
-              <Search className="w-3.5 h-3.5 text-white/50 absolute left-3 top-2.5" />
+              <Search className="w-4 h-4 text-ink-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             </div>
           </form>
         </div>

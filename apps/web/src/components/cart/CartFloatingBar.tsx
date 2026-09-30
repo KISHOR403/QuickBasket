@@ -24,22 +24,22 @@ export function CartFloatingBar() {
       <button
         onClick={openCartDrawer}
         aria-label={`Open cart, ${totalItems} ${totalItems === 1 ? 'item' : 'items'}, total ${formatCurrency(itemTotal)}`}
-        className="w-full bg-mango hover:bg-mango-hover text-ink p-3.5 rounded-pill shadow-float flex items-center justify-between transition-transform active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-ink/40"
+        className="w-full bg-ink hover:bg-ink-700 text-white p-4 rounded-2xl shadow-editorial flex items-center justify-between transition-all active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-basil/30"
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-ink text-mango flex items-center justify-center font-black">
-            <ShoppingBag className="w-5 h-5" />
+          <div className="w-10 h-10 rounded-xl bg-basil flex items-center justify-center">
+            <ShoppingBag className="w-5 h-5 text-white" />
           </div>
           <div className="flex flex-col text-left">
-            <span className="text-xs font-bold uppercase tracking-wider text-ink-700">
-              {totalItems} {totalItems === 1 ? 'ITEM' : 'ITEMS'} IN CART
+            <span className="text-[10px] font-bold uppercase tracking-wider text-white/50">
+              {totalItems} {totalItems === 1 ? 'item' : 'items'}
             </span>
-            <span className="text-base font-mono font-black">{formatCurrency(itemTotal)}</span>
+            <span className="text-base font-mono font-bold">{formatCurrency(itemTotal)}</span>
           </div>
         </div>
 
-        <div className="flex items-center gap-1 text-sm font-extrabold uppercase tracking-wide bg-ink/10 px-3 py-1.5 rounded-pill">
-          <span>View Cart</span>
+        <div className="flex items-center gap-1.5 text-sm font-bold bg-white/10 px-4 py-2 rounded-xl">
+          <span>View cart</span>
           <ArrowRight className="w-4 h-4" />
         </div>
       </button>

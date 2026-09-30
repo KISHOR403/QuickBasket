@@ -4,13 +4,13 @@ import './globals.css';
 import { ClientProviders } from '@/components/providers/ClientProviders';
 
 export const metadata: Metadata = {
-  title: 'QuickBasket - 10 Min Grocery & Multi-Vendor Express Delivery',
+  title: 'QuickBasket — Fresh Groceries in 10 Minutes',
   description:
-    'Order fresh milk, organic vegetables, snacks, staples and local kirana favorites delivered in 10-15 minutes.',
+    'Order fresh milk, organic vegetables, snacks, staples and local kirana favorites delivered in 10-15 minutes. Premium grocery delivery reimagined.',
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0E7C4A',
+  themeColor: '#1a6b42',
 };
 
 export default function RootLayout({
@@ -27,7 +27,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="anonymous" />
       </head>
-      <body className="min-h-screen flex flex-col font-sans antialiased selection:bg-basil-light selection:text-basil">
+      <body className="min-h-screen flex flex-col font-sans antialiased">
         <ClientProviders>{children}</ClientProviders>
       </body>
     </html>

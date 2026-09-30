@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React from 'react';
 import Image from 'next/image';
-import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
-import { SectionHeader } from '@/components/common/SectionHeader';
+import { Star, Quote } from 'lucide-react';
 
 interface Testimonial {
   id: string;
@@ -57,7 +56,7 @@ const TESTIMONIALS: Testimonial[] = [
       'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
     rating: 5,
     review:
-      'As a bachelor, QuickBasket has been a lifesaver. From late-night snacks to morning milk — everything delivered in minutes. The app is super intuitive too!',
+      'As a bachelor, QuickBasket has been a lifesaver. From late-night snacks to morning milk — everything delivered in minutes.',
     orderCount: '200+ orders',
   },
   {
@@ -68,7 +67,7 @@ const TESTIMONIALS: Testimonial[] = [
       'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
     rating: 5,
     review:
-      'The freshness of fruits here is unmatched. My kids love the organic mangoes! Plus, the discount offers keep my monthly grocery bill way under budget.',
+      'The freshness of fruits here is unmatched. My kids love the organic mangoes! Plus, the discount offers keep my monthly grocery bill under budget.',
     orderCount: '150+ orders',
   },
   {
@@ -79,7 +78,7 @@ const TESTIMONIALS: Testimonial[] = [
       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
     rating: 4,
     review:
-      'Switched from BigBasket to QuickBasket last month and haven\'t looked back. Faster delivery, better prices, and the customer support is exceptional.',
+      "Switched from BigBasket last month and haven't looked back. Faster delivery, better prices, and exceptional customer support.",
     orderCount: '40+ orders',
   },
 ];
@@ -90,10 +89,10 @@ function StarRating({ rating }: { rating: number }) {
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
-          className={`w-3.5 h-3.5 ${
+          className={`w-3 h-3 ${
             i < rating
               ? 'text-mango fill-mango'
-              : 'text-ink-200 fill-ink-200'
+              : 'text-mist fill-mist'
           }`}
         />
       ))}
@@ -102,96 +101,90 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 export function Testimonials() {
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const scroll = (direction: 'left' | 'right') => {
-    if (!scrollRef.current) return;
-    const amount = 320;
-    scrollRef.current.scrollBy({
-      left: direction === 'left' ? -amount : amount,
-      behavior: 'smooth',
-    });
-  };
+  const featured = TESTIMONIALS[0];
+  const rest = TESTIMONIALS.slice(1);
 
   return (
-    <section>
-      <div className="flex items-end justify-between gap-4">
-        <SectionHeader
-          eyebrow="Trusted by Thousands"
-          title="What Our Customers Say"
-          description="Real reviews from real QuickBasket shoppers."
-        />
-
-        {/* Scroll arrows — desktop only */}
-        <div className="hidden sm:flex items-center gap-2 shrink-0">
-          <button
-            type="button"
-            onClick={() => scroll('left')}
-            className="w-8 h-8 rounded-full border border-mist bg-surface hover:bg-basil-light text-ink-400 hover:text-basil flex items-center justify-center transition-all active:scale-90"
-            aria-label="Scroll testimonials left"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => scroll('right')}
-            className="w-8 h-8 rounded-full border border-mist bg-surface hover:bg-basil-light text-ink-400 hover:text-basil flex items-center justify-center transition-all active:scale-90"
-            aria-label="Scroll testimonials right"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
+    <section className="py-16 md:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-10 md:mb-14">
+          <span className="text-xs font-bold uppercase tracking-[0.16em] text-basil mb-2 block">
+            Trusted by thousands
+          </span>
+          <h2 className="font-display text-display-md text-ink">
+            What people say
+          </h2>
         </div>
-      </div>
 
-      {/* Horizontally scrolling cards */}
-      <div
-        ref={scrollRef}
-        className="mt-6 flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-2"
-      >
-        {TESTIMONIALS.map((t) => (
-          <div
-            key={t.id}
-            className="group min-w-[280px] max-w-[320px] flex-shrink-0 snap-start bg-surface border border-mist rounded-card p-5 shadow-card hover:shadow-float hover:-translate-y-1 hover:border-basil/20 transition-all duration-300 ease-smooth flex flex-col"
-          >
-            {/* Quote icon */}
-            <Quote className="w-6 h-6 text-basil/20 mb-3 -scale-x-100" />
-
-            {/* Review text */}
-            <p className="text-xs text-ink-600 leading-relaxed flex-1 mb-4">
-              &ldquo;{t.review}&rdquo;
-            </p>
-
-            {/* Rating */}
-            <StarRating rating={t.rating} />
-
-            {/* Divider */}
-            <hr className="border-mist my-3" />
-
-            {/* Author */}
-            <div className="flex items-center gap-3">
-              <div className="relative w-9 h-9 rounded-full overflow-hidden ring-2 ring-basil-light shrink-0">
+        {/* Magazine-style layout: 1 large + grid of smaller */}
+        <div className="grid lg:grid-cols-5 gap-4 md:gap-6">
+          {/* Featured large testimonial */}
+          <div className="lg:col-span-2 bg-basil text-white rounded-2xl p-8 md:p-10 flex flex-col justify-between relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-white/[0.04] -translate-y-1/2 translate-x-1/4" />
+            <div className="relative z-10">
+              <Quote className="w-8 h-8 text-white/20 mb-6 -scale-x-100" />
+              <p className="text-base md:text-lg font-medium leading-relaxed mb-8">
+                &ldquo;{featured.review}&rdquo;
+              </p>
+            </div>
+            <div className="relative z-10 flex items-center gap-3 pt-6 border-t border-white/15">
+              <div className="relative w-11 h-11 rounded-full overflow-hidden ring-2 ring-white/30 shrink-0">
                 <Image
-                  src={t.avatar}
-                  alt={t.name}
+                  src={featured.avatar}
+                  alt={featured.name}
                   fill
-                  sizes="36px"
+                  sizes="44px"
                   className="object-cover"
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-bold text-ink truncate">
-                  {t.name}
-                </p>
-                <p className="text-[10px] text-ink-400 truncate">
-                  {t.location}
-                </p>
+                <p className="text-sm font-bold truncate">{featured.name}</p>
+                <p className="text-[11px] text-white/60 truncate">{featured.location}</p>
               </div>
-              <span className="text-[9px] font-bold text-basil bg-basil-light px-2 py-0.5 rounded-pill shrink-0">
-                {t.orderCount}
-              </span>
+              <div className="flex flex-col items-end gap-1">
+                <StarRating rating={featured.rating} />
+                <span className="text-[10px] font-bold text-white/50">{featured.orderCount}</span>
+              </div>
             </div>
           </div>
-        ))}
+
+          {/* Smaller testimonials grid */}
+          <div className="lg:col-span-3 grid sm:grid-cols-2 gap-4">
+            {rest.slice(0, 4).map((t, idx) => (
+              <div
+                key={t.id}
+                className="bg-white rounded-2xl p-6 flex flex-col justify-between hover-lift animate-fadeInUp"
+                style={{ animationDelay: `${idx * 60}ms` }}
+              >
+                <div>
+                  <StarRating rating={t.rating} />
+                  <p className="text-sm text-ink-600 leading-relaxed mt-3 mb-4 line-clamp-4">
+                    &ldquo;{t.review}&rdquo;
+                  </p>
+                </div>
+                <div className="flex items-center gap-2.5 pt-3 border-t border-mist">
+                  <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0">
+                    <Image
+                      src={t.avatar}
+                      alt={t.name}
+                      fill
+                      sizes="32px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bold text-ink truncate">{t.name}</p>
+                    <p className="text-[10px] text-ink-400 truncate">{t.location}</p>
+                  </div>
+                  <span className="text-[9px] font-bold text-basil bg-basil-light px-2 py-0.5 rounded-lg shrink-0">
+                    {t.orderCount}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

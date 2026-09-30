@@ -18,8 +18,8 @@
   }
 
   body {
-    background-color: #FCFCFA;
-    color: #14231B;
+    background-color: #faf9f6;
+    color: #0f1a14;
     @apply font-sans;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -28,6 +28,11 @@
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-display;
+  }
+
+  ::selection {
+    background-color: rgba(26, 107, 66, 0.12);
+    color: #0f1a14;
   }
 }
 
@@ -40,10 +45,7 @@
   scrollbar-width: none;
 }
 
-/* Shimmer skeleton — a light band sweeps across a soft base, reading as
-   "content on its way" rather than a static grey block. Defined here (not only
-   in the Tailwind preset) so the keyframe ships even though .skeleton uses raw
-   CSS rather than the animate-shimmer utility. */
+/* Shimmer skeleton */
 @keyframes shimmer {
   0% {
     background-position: 150% 0;
@@ -54,7 +56,7 @@
 }
 
 .skeleton {
-  background-color: #E4EBE6;
+  background-color: #eae8e3;
   background-image: linear-gradient(
     100deg,
     rgba(255, 255, 255, 0) 30%,
@@ -66,8 +68,55 @@
   animation: shimmer 1.5s ease-in-out infinite;
 }
 
-/* Respect users who ask for less motion: kill sweeps, reveals and smooth
-   scroll, but leave everything legible in its final state. */
+/* Glass morphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+}
+
+.glass-dark {
+  background: rgba(15, 26, 20, 0.72);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+}
+
+/* Editorial text gradient */
+.text-gradient {
+  background: linear-gradient(135deg, #1a6b42 0%, #22a855 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Smooth scroll snap for carousels */
+.scroll-snap-x {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-snap-start {
+  scroll-snap-align: start;
+}
+
+/* Hover lift effect */
+.hover-lift {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px -12px rgba(15, 26, 20, 0.12);
+}
+
+/* Image reveal */
+.img-reveal {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+}
+.img-reveal:hover {
+  transform: scale(1.04);
+}
+
+/* Respect users who ask for less motion */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -81,5 +130,11 @@
   }
   .skeleton {
     animation: none !important;
+  }
+  .hover-lift:hover {
+    transform: none;
+  }
+  .img-reveal:hover {
+    transform: none;
   }
 }

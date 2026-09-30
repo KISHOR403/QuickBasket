@@ -20,15 +20,17 @@ export function ProductGrid({
         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
           <div
             key={n}
-            className="bg-surface border border-mist rounded-card p-3 flex flex-col gap-3 animate-fadeIn"
+            className="bg-white rounded-2xl overflow-hidden animate-fadeIn"
             style={{ animationDelay: `${n * 40}ms` }}
           >
-            <Skeleton className="w-full aspect-square rounded-input" />
-            <Skeleton className="h-2.5 w-1/2" />
-            <Skeleton className="h-4 w-4/5" />
-            <div className="flex items-center justify-between gap-2 mt-auto pt-2">
-              <Skeleton className="h-4 w-12" />
-              <Skeleton className="h-8 w-20 rounded-pill" />
+            <Skeleton className="w-full aspect-square" />
+            <div className="p-4 space-y-2">
+              <Skeleton className="h-2.5 w-1/2" />
+              <Skeleton className="h-4 w-4/5" />
+              <div className="flex items-center justify-between gap-2 pt-2">
+                <Skeleton className="h-4 w-12" />
+                <Skeleton className="h-8 w-20 rounded-xl" />
+              </div>
             </div>
           </div>
         ))}
@@ -38,8 +40,8 @@ export function ProductGrid({
 
   if (!products || products.length === 0) {
     return (
-      <div className="text-center py-12 bg-surface-muted rounded-card border border-mist p-8 animate-fadeInUp">
-        <p className="text-sm font-semibold text-ink-500">{emptyText}</p>
+      <div className="text-center py-16 bg-cream rounded-2xl p-8 animate-fadeInUp">
+        <p className="text-sm font-medium text-ink-400">{emptyText}</p>
       </div>
     );
   }

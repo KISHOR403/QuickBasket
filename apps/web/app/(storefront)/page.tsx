@@ -1,11 +1,13 @@
 'use client';
 
 import React from 'react';
-import { SectionHeader } from '@/components/common/SectionHeader';
-import { ProductGrid } from '@/components/product/ProductGrid';
 import { useProductsQuery } from '@quickbasket/api-client';
-import { HeroCarousel } from '@/components/home/HeroCarousel';
+import { HeroSection } from '@/components/home/HeroCarousel';
 import { CategoryGrid } from '@/components/home/CategoryGrid';
+import { ShopByMood } from '@/components/home/ShopByMood';
+import { ProductCarousel } from '@/components/product/ProductCarousel';
+import { FeaturedProducts } from '@/components/product/FeaturedProducts';
+import { SmartShopping } from '@/components/home/SmartShopping';
 import { PromoBanners } from '@/components/home/PromoBanners';
 import { WhyQuickBasket } from '@/components/home/WhyQuickBasket';
 import { Testimonials } from '@/components/home/Testimonials';
@@ -15,50 +17,62 @@ export default function HomePage() {
   const { data: products, isLoading: isProductsLoading } = useProductsQuery();
 
   const organicProducts = products?.filter((p) => p.isOrganic) || [];
+  const expressProducts = products?.filter((p) => p.isExpress) || [];
+  const affordableProducts = products?.filter((p) => {
+    const variant = p.variants.find((v) => v.id === p.defaultVariantId) || p.variants[0];
+    return variant.price < 200;
+  }) || [];
 
   return (
-    <div className="pb-4 space-y-10">
-      {/* Dynamic Hero Carousel Banner (Auto-rotating background images & matching text) */}
-      <HeroCarousel />
+    <div className="pb-4">
+      {/* 1. Editorial Hero */}
+      <HeroSection />
 
-      {/* Shop by Category — icon grid */}
+      {/* 2. Category Discovery — horizontal scroll tiles */}
       <CategoryGrid />
 
-      {/* Trending Bestsellers */}
-      <section>
-        <SectionHeader
-          eyebrow="Trending Now"
-          title="Trending Bestsellers"
-          description="Delivered to your doorstep in 10-12 minutes."
-          action={{ label: 'View All', href: '/category/dairy-bread-eggs' }}
-        />
-        <div className="mt-6">
-          <ProductGrid products={products} isLoading={isProductsLoading} />
-        </div>
-      </section>
+      {/* 3. Shop by Mood — lifestyle discovery */}
+      <ShopByMood />
 
-      {/* Deals & Offers — promotional banners */}
+      {/* 4. Trending Today — horizontal product carousel */}
+      <ProductCarousel
+        eyebrow="Trending now"
+        title="Trending today"
+        products={products}
+        isLoading={isProductsLoading}
+        viewAllHref="/category/dairy-bread-eggs"
+      />
+
+      {/* 5. Freshly Picked — asymmetric featured layout */}
+      <FeaturedProducts
+        eyebrow="Direct from farms"
+        title="Freshly picked"
+        products={organicProducts}
+        isLoading={isProductsLoading}
+      />
+
+      {/* 6. Smart Shopping — AI grocery assistant */}
+      <SmartShopping />
+
+      {/* 7. Today's Drops — editorial deals */}
       <PromoBanners />
 
-      {/* Farm Fresh & Organic */}
-      <section>
-        <SectionHeader
-          eyebrow="Direct from Farms"
-          title="Organic Vegetables & Farm Fruits"
-          action={{ label: 'Explore Farm Fresh', href: '/category/fresh-vegetables' }}
-        />
-        <div className="mt-6">
-          <ProductGrid products={organicProducts} isLoading={isProductsLoading} />
-        </div>
-      </section>
+      {/* 8. Under ₹199 — compact horizontal carousel */}
+      <ProductCarousel
+        eyebrow="Budget picks"
+        title="Under ₹199"
+        products={affordableProducts}
+        isLoading={isProductsLoading}
+        cardSize="default"
+      />
 
-      {/* Why QuickBasket — USP pillars */}
+      {/* 9. Quality Pillars — trust storytelling */}
       <WhyQuickBasket />
 
-      {/* Customer Testimonials */}
+      {/* 10. Testimonials — magazine style */}
       <Testimonials />
 
-      {/* Download the App CTA */}
+      {/* 11. Download App — immersive dark section */}
       <DownloadApp />
     </div>
   );

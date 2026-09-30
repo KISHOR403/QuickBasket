@@ -3,24 +3,21 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Zap } from 'lucide-react';
+import { Plus, Minus, Star } from 'lucide-react';
 import { Product } from '@quickbasket/types';
 import { formatCurrency, calculateDiscount } from '@quickbasket/utils';
 import { useCartStore } from '@/store/cart';
-import { QtyStepper } from './QtyStepper';
-import { Badge } from '@/components/ui/Badge';
 import { cn } from '@/lib/utils';
 
 export interface ProductCardProps {
   product: Product;
+  size?: 'default' | 'large' | 'compact';
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, size = 'default' }: ProductCardProps) {
   const { items, addItem, updateQuantity } = useCartStore();
   const [imgLoaded, setImgLoaded] = useState(false);
 
-  // Cards surface a single pack size (the default). Picking between multiple
-  // pack sizes happens on the product detail page, not inside the card.
   const variant =
     product.variants.find((v) => v.id === product.defaultVariantId) || product.variants[0];
 
@@ -30,88 +27,147 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const quantity = cartItem ? cartItem.quantity : 0;
   const discountPercent = calculateDiscount(variant.price, variant.mrp);
+  const isLarge = size === 'large';
+  const isCompact = size === 'compact';
 
   return (
-    <div className="group bg-surface border border-mist rounded-card p-3 shadow-card transition-all duration-300 ease-smooth hover:shadow-float hover:-translate-y-1 hover:border-basil/30 flex flex-col justify-between relative overflow-hidden">
-      {/* Top badges */}
-      <div className="flex justify-between items-start mb-2 z-10">
-        {discountPercent > 0 ? (
-          <Badge variant="beet" className="text-[10px] font-extrabold uppercase px-2">
-            {discountPercent}% OFF
-          </Badge>
-        ) : (
-          <div />
-        )}
-
-        {product.isExpress && (
-          <Badge variant="leaf" className="text-[10px] px-1.5 py-0.5">
-            <Zap className="w-3 h-3 fill-current text-mango" /> 10m
-          </Badge>
-        )}
-      </div>
+    <div
+      className={cn(
+        'group relative bg-white rounded-2xl transition-all duration-500 ease-smooth flex flex-col overflow-hidden',
+        isLarge
+          ? 'shadow-card hover:shadow-editorial'
+          : 'hover:shadow-float',
+        isCompact && 'flex-row items-center gap-3 p-3 rounded-xl'
+      )}
+    >
+      {/* Discount tag */}
+      {discountPercent > 0 && !isCompact && (
+        <div className="absolute top-3 left-3 z-10 bg-basil text-white text-[10px] font-bold px-2.5 py-1 rounded-lg">
+          {discountPercent}% OFF
+        </div>
+      )}
 
       {/* Product Image */}
       <Link
         href={`/product/${product.slug}`}
-        className="block relative w-full aspect-square mb-2 overflow-hidden rounded-input bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil/40"
+        className={cn(
+          'block relative overflow-hidden bg-cream/50',
+          isLarge
+            ? 'aspect-[4/5] rounded-t-2xl'
+            : isCompact
+              ? 'w-20 h-20 rounded-xl shrink-0'
+              : 'aspect-square rounded-t-2xl'
+        )}
       >
         <Image
           src={product.images[0]}
           alt={product.name}
           fill
-          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
+          sizes={isLarge ? '(max-width: 768px) 100vw, 400px' : isCompact ? '80px' : '(max-width: 768px) 50vw, 220px'}
           onLoad={() => setImgLoaded(true)}
           className={cn(
-            'object-cover transition-[opacity,filter,transform] duration-500 ease-smooth group-hover:scale-105',
-            imgLoaded ? 'opacity-100 blur-0' : 'opacity-0 blur-md'
+            'object-cover transition-all duration-700 ease-smooth',
+            !isCompact && 'group-hover:scale-105',
+            imgLoaded ? 'opacity-100' : 'opacity-0'
           )}
         />
       </Link>
 
-      {/* Title & Brand */}
-      <div className="flex flex-col flex-grow">
-        <span className="text-[10px] font-extrabold uppercase tracking-wider text-ink-400">
-          {product.brand}
-        </span>
+      {/* Content */}
+      <div className={cn(
+        'flex flex-col flex-grow',
+        isCompact ? 'min-w-0 flex-1' : 'p-4'
+      )}>
+        {/* Brand */}
+        {!isCompact && (
+          <span className="text-[10px] font-bold uppercase tracking-wider text-ink-400 mb-1">
+            {product.brand}
+          </span>
+        )}
+
+        {/* Name */}
         <Link
           href={`/product/${product.slug}`}
-          className="text-xs font-bold text-ink line-clamp-2 hover:text-basil transition-colors mt-0.5 mb-1 min-h-[32px] rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil/40"
+          className={cn(
+            'font-bold text-ink hover:text-basil transition-colors leading-tight',
+            isLarge ? 'text-base mb-1' : isCompact ? 'text-xs line-clamp-1' : 'text-sm line-clamp-2 mb-1 min-h-[36px]'
+          )}
         >
           {product.name}
         </Link>
 
-        {/* Pack size — muted, static text (no in-card variant switching) */}
-        <div className="text-[11px] font-medium text-ink-500 mb-3">{variant.name}</div>
-      </div>
-
-      {/* Bottom: price + orange ADD / qty stepper */}
-      <div className="flex items-center justify-between gap-2 pt-2 border-t border-mist/50 mt-auto">
-        <div className="flex items-baseline gap-1 font-mono">
-          <span className="text-sm font-black text-ink">{formatCurrency(variant.price)}</span>
-          {variant.mrp > variant.price && (
-            <span className="text-[10px] text-ink-400 line-through">
-              {formatCurrency(variant.mrp)}
-            </span>
-          )}
+        {/* Variant */}
+        <div className={cn(
+          'text-ink-400 font-medium',
+          isCompact ? 'text-[10px]' : 'text-[11px] mb-2'
+        )}>
+          {variant.name}
         </div>
 
-        {/* Fixed-width slot so ADD → stepper doesn't shift the layout */}
-        <div className="w-[92px] shrink-0">
-          {quantity === 0 ? (
-            <button
-              onClick={() => addItem(product, variant, 1)}
-              className="w-full bg-mango hover:bg-mango-hover text-ink text-xs font-extrabold uppercase py-2 px-4 rounded-pill shadow-sm transition-all active:scale-95 tracking-wider"
-            >
-              ADD
-            </button>
-          ) : (
-            <QtyStepper
-              className="w-full"
-              quantity={quantity}
-              onIncrement={() => addItem(product, variant, 1)}
-              onDecrement={() => updateQuantity(product.id, variant.id, quantity - 1)}
-            />
-          )}
+        {/* Rating - only on large */}
+        {isLarge && (
+          <div className="flex items-center gap-1.5 mb-3">
+            <Star className="w-3.5 h-3.5 text-mango fill-mango" />
+            <span className="text-xs font-bold text-ink">{product.rating}</span>
+            <span className="text-[10px] text-ink-400">({product.reviewCount})</span>
+          </div>
+        )}
+
+        {/* Price + Add */}
+        <div className={cn(
+          'flex items-center justify-between gap-2',
+          isCompact ? 'mt-1' : 'mt-auto pt-2'
+        )}>
+          <div className="flex items-baseline gap-1.5">
+            <span className={cn(
+              'font-mono font-bold text-ink',
+              isLarge ? 'text-lg' : isCompact ? 'text-sm' : 'text-sm'
+            )}>
+              {formatCurrency(variant.price)}
+            </span>
+            {variant.mrp > variant.price && (
+              <span className="text-[10px] text-ink-300 line-through font-mono">
+                {formatCurrency(variant.mrp)}
+              </span>
+            )}
+          </div>
+
+          {/* Add / Stepper */}
+          <div className={cn(isCompact ? 'shrink-0' : 'shrink-0')}>
+            {quantity === 0 ? (
+              <button
+                onClick={() => addItem(product, variant, 1)}
+                className={cn(
+                  'flex items-center justify-center rounded-xl border-2 border-basil text-basil hover:bg-basil hover:text-white font-bold transition-all active:scale-95',
+                  isCompact
+                    ? 'w-8 h-8'
+                    : 'gap-1 px-4 py-2 text-xs'
+                )}
+                aria-label="Add to cart"
+              >
+                <Plus className={cn(isCompact ? 'w-4 h-4' : 'w-3.5 h-3.5')} />
+                {!isCompact && <span>Add</span>}
+              </button>
+            ) : (
+              <div className="inline-flex items-center bg-basil text-white rounded-xl overflow-hidden">
+                <button
+                  onClick={() => updateQuantity(product.id, variant.id, quantity - 1)}
+                  className="w-8 h-8 flex items-center justify-center hover:bg-basil-hover transition-colors active:scale-90"
+                  aria-label="Decrease quantity"
+                >
+                  <Minus className="w-3.5 h-3.5" />
+                </button>
+                <span className="w-6 text-center text-xs font-mono font-bold">{quantity}</span>
+                <button
+                  onClick={() => addItem(product, variant, 1)}
+                  className="w-8 h-8 flex items-center justify-center hover:bg-basil-hover transition-colors active:scale-90"
+                  aria-label="Increase quantity"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

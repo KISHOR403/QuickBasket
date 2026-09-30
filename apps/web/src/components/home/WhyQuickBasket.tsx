@@ -1,92 +1,74 @@
 import React from 'react';
-import { Zap, Leaf, IndianRupee, RefreshCcw, LucideIcon } from 'lucide-react';
-import { SectionHeader } from '@/components/common/SectionHeader';
+import { Zap, Leaf, IndianRupee, RefreshCcw } from 'lucide-react';
 
-interface USP {
-  id: string;
-  icon: LucideIcon;
-  iconBg: string;
-  iconColor: string;
-  title: string;
-  description: string;
-}
-
-const USPS: USP[] = [
+const PILLARS = [
   {
     id: 'usp-1',
     icon: Zap,
-    iconBg: 'bg-mango-light',
-    iconColor: 'text-mango-hover',
-    title: '10-Minute Delivery',
-    description:
-      "Hyperlocal dark stores ensure your essentials arrive before you can say 'where's my order?'",
+    title: 'Picked fresh',
+    subtitle: '10-minute delivery',
+    description: 'Hyperlocal dark stores ensure your essentials arrive lightning fast.',
   },
   {
     id: 'usp-2',
     icon: Leaf,
-    iconBg: 'bg-basil-light',
-    iconColor: 'text-basil',
-    title: 'Farm Fresh Quality',
-    description:
-      'Sourced directly from verified organic farms. Every fruit & vegetable handpicked for freshness.',
+    title: 'Farm sourced',
+    subtitle: 'Organic quality',
+    description: 'Directly from verified farms. Every item handpicked for freshness.',
   },
   {
     id: 'usp-3',
     icon: IndianRupee,
-    iconBg: 'bg-leaf-light',
-    iconColor: 'text-leaf',
-    title: 'Best Prices Guaranteed',
-    description:
-      'Lower than supermarkets, better than wholesale. We pass savings directly to you.',
+    title: 'Best prices',
+    subtitle: 'Guaranteed savings',
+    description: 'Lower than supermarkets. We pass savings directly to you.',
   },
   {
     id: 'usp-4',
     icon: RefreshCcw,
-    iconBg: 'bg-beet-light',
-    iconColor: 'text-beet',
-    title: 'Easy Returns & Refunds',
-    description:
-      'Not happy with your order? Get instant refunds — no questions asked, zero hassle.',
+    title: 'Easy returns',
+    subtitle: 'Zero hassle',
+    description: 'Not happy? Instant refunds — no questions asked.',
   },
 ];
 
 export function WhyQuickBasket() {
   return (
-    <section>
-      <SectionHeader
-        eyebrow="The QuickBasket Promise"
-        title="Why Customers Love Us"
-        description="Four reasons that make QuickBasket your go-to grocery partner."
-      />
-
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {USPS.map((usp) => {
-          const Icon = usp.icon;
-
-          return (
-            <div
-              key={usp.id}
-              className="group bg-surface border border-mist rounded-card p-5 shadow-card hover:shadow-float hover:-translate-y-1 hover:border-basil/20 transition-all duration-300 ease-smooth"
-            >
-              {/* Icon */}
+    <section className="py-16 md:py-24 bg-cream/50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Full-width storytelling layout */}
+        <div className="grid md:grid-cols-4 gap-8 md:gap-12">
+          {PILLARS.map((pillar, idx) => {
+            const Icon = pillar.icon;
+            return (
               <div
-                className={`w-11 h-11 rounded-input flex items-center justify-center mb-4 ${usp.iconBg} transition-transform duration-300 group-hover:scale-110`}
+                key={pillar.id}
+                className="group text-center md:text-left animate-fadeInUp"
+                style={{ animationDelay: `${idx * 80}ms` }}
               >
-                <Icon className={`w-5 h-5 ${usp.iconColor}`} />
+                {/* Icon */}
+                <div className="w-12 h-12 rounded-2xl bg-basil/10 flex items-center justify-center mb-5 mx-auto md:mx-0 transition-transform duration-300 group-hover:scale-110">
+                  <Icon className="w-5 h-5 text-basil" />
+                </div>
+
+                {/* Large title */}
+                <h3 className="font-display text-xl md:text-2xl font-bold text-ink tracking-tight mb-1">
+                  {pillar.title}
+                </h3>
+
+                {/* Subtitle */}
+                <span className="text-xs font-bold text-basil uppercase tracking-wider block mb-3">
+                  {pillar.subtitle}
+                </span>
+
+                {/* Description */}
+                <p className="text-sm text-ink-400 leading-relaxed max-w-xs mx-auto md:mx-0">
+                  {pillar.description}
+                </p>
               </div>
-
-              {/* Title */}
-              <h3 className="font-display text-sm font-bold text-ink tracking-tight mb-1.5">
-                {usp.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-xs text-ink-500 leading-relaxed">
-                {usp.description}
-              </p>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </section>
   );

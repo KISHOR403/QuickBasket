@@ -42,16 +42,14 @@ export function LocationGate({ variant = 'default' }: LocationGateProps) {
     <>
       {/* Header / Default Button Trigger */}
       {variant === 'header' ? (
-        <button
-          type="button"
-          onClick={openLocationModal}
+        <span
           className="flex items-center gap-1 text-left group cursor-pointer"
         >
-          <span className="font-bold text-white truncate max-w-[160px]">
-            {area}, {pincode}
+          <span className="font-bold text-ink text-xs truncate max-w-[140px]">
+            {area}
           </span>
-          <ChevronDown className="w-3 h-3 text-white/60 group-hover:text-white group-hover:translate-y-0.5 transition-all" />
-        </button>
+          <ChevronDown className="w-3 h-3 text-ink-400 group-hover:text-ink group-hover:translate-y-0.5 transition-all" />
+        </span>
       ) : (
         <button
           type="button"

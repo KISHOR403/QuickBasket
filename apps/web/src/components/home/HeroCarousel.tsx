@@ -1,227 +1,114 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
+import React from 'react';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, ArrowRight, Sparkles } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import Image from 'next/image';
+import { ArrowRight, Clock, Leaf, ShieldCheck } from 'lucide-react';
 
-interface Slide {
-  id: string;
-  badge: string;
-  badgeBg: string;
-  badgeTextColor: string;
-  headline: string;
-  subtitle: string;
-  ctaText: string;
-  ctaHref: string;
-  imageUrl: string;
-  imageAlt: string;
-}
-
-const HERO_SLIDES: Slide[] = [
-  {
-    id: 'slide-1',
-    badge: 'Fresh Arrivals',
-    badgeBg: 'bg-mango',
-    badgeTextColor: 'text-ink',
-    headline: 'Farm Fresh,\nIn 10 Minutes.',
-    subtitle: 'Stock up on daily essentials sourced directly from local farms. Handpicked quality guaranteed.',
-    ctaText: 'Shop Vegetables',
-    ctaHref: '/category/fresh-vegetables',
-    imageUrl: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1400&q=80',
-    imageAlt: 'Farm fresh vegetables',
-  },
-  {
-    id: 'slide-2',
-    badge: 'Daily Essentials',
-    badgeBg: 'bg-leaf',
-    badgeTextColor: 'text-white',
-    headline: 'Pure Organic Milk\n& Fresh Dairy.',
-    subtitle: 'Farm-fresh milk, butter, paneer, and curd delivered chilled to your doorstep in 10 mins.',
-    ctaText: 'Explore Dairy & Eggs',
-    ctaHref: '/category/dairy-bread-eggs',
-    imageUrl: 'https://images.unsplash.com/photo-1628088062854-d1870b4553da?auto=format&fit=crop&w=1400&q=80',
-    imageAlt: 'Organic fresh milk and dairy',
-  },
-  {
-    id: 'slide-3',
-    badge: 'Super Saver Sale',
-    badgeBg: 'bg-beet',
-    badgeTextColor: 'text-white',
-    headline: 'Juicy Fruits &\nExotic Berries.',
-    subtitle: 'Up to 40% OFF on imported apples, organic berries, and sweet farm-picked fruits.',
-    ctaText: 'Shop Fresh Fruits',
-    ctaHref: '/category/fresh-fruits',
-    imageUrl: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=1400&q=80',
-    imageAlt: 'Fresh fruits and berries',
-  },
-  {
-    id: 'slide-4',
-    badge: 'Express Munchies',
-    badgeBg: 'bg-brand',
-    badgeTextColor: 'text-ink',
-    headline: 'Midnight Snacks\n& Cold Drinks.',
-    subtitle: 'Crave-worthy chips, chocolates, artisanal beverages & snacks delivered 24x7 in minutes.',
-    ctaText: 'Order Snacks & Drinks',
-    ctaHref: '/category/snacks-munchies',
-    imageUrl: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80',
-    imageAlt: 'Snacks, chips, and drinks',
-  },
-  {
-    id: 'slide-5',
-    badge: 'Baked Fresh Daily',
-    badgeBg: 'bg-amber-600',
-    badgeTextColor: 'text-white',
-    headline: 'Artisanal Breads\n& Oven Bakery.',
-    subtitle: 'Fresh sourdough, croissants, and whole wheat loaves baked every morning.',
-    ctaText: 'Browse Bakery',
-    ctaHref: '/category/bakery-biscuits',
-    imageUrl: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80',
-    imageAlt: 'Freshly baked breads and bakery',
-  },
+const FLOATING_CARDS = [
+  { emoji: '🥑', name: 'Avocados', price: '₹189', position: 'top-[18%] right-[8%] md:right-[12%]' },
+  { emoji: '🍓', name: 'Berries', price: '₹149', position: 'bottom-[22%] right-[4%] md:right-[6%]' },
+  { emoji: '🥛', name: 'Fresh Milk', price: '₹54', position: 'top-[55%] right-[18%] md:right-[22%]' },
 ];
 
-export function HeroCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const touchStartX = useRef<number | null>(null);
-
-  // Auto-slide effect every 3.5 seconds
-  useEffect(() => {
-    if (isPaused) return;
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % HERO_SLIDES.length);
-    }, 3500);
-
-    return () => clearInterval(interval);
-  }, [isPaused]);
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % HERO_SLIDES.length);
-  };
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
-  };
-
-  // Touch handlers for mobile swipe
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
-    const touchEndX = e.changedTouches[0].clientX;
-    const diff = touchStartX.current - touchEndX;
-
-    if (Math.abs(diff) > 40) {
-      if (diff > 0) {
-        handleNext();
-      } else {
-        handlePrev();
-      }
-    }
-    touchStartX.current = null;
-  };
-
-  const activeSlide = HERO_SLIDES[currentIndex];
-
+export function HeroSection() {
   return (
-    <section
-      className="relative overflow-hidden rounded-3xl min-h-[340px] sm:min-h-[380px] flex items-end shadow-float border border-white/10 group select-none"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
-      {/* Background Images Cross-Fade */}
-      {HERO_SLIDES.map((slide, idx) => (
-        <div
-          key={slide.id}
-          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-            idx === currentIndex ? 'opacity-100 z-0' : 'opacity-0 -z-10'
-          }`}
-        >
-          <Image
-            src={slide.imageUrl}
-            alt={slide.imageAlt}
-            fill
-            sizes="(max-width: 768px) 100vw, 1200px"
-            className="object-cover transition-transform duration-7000 ease-out scale-105"
-            priority={idx === 0}
-          />
-        </div>
-      ))}
+    <section className="relative min-h-[92vh] md:min-h-[88vh] flex items-center overflow-hidden pt-20 md:pt-24">
+      {/* Subtle background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-paper via-basil-light/20 to-paper" />
 
-      {/* Dark Multi-layer Gradient Overlay */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-t from-ink/90 via-ink/40 to-black/20" />
-      <div className="absolute inset-0 z-10 bg-gradient-to-r from-ink/70 via-transparent to-transparent hidden sm:block" />
+      {/* Large decorative circle */}
+      <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/3 w-[600px] h-[600px] md:w-[800px] md:h-[800px] rounded-full bg-basil/[0.03]" />
 
-      {/* Slide Dynamic Content */}
-      <div className="relative z-20 p-6 sm:p-10 w-full space-y-3.5">
-        <div key={`content-${currentIndex}`} className="space-y-3 animate-fadeInUp">
-          <span
-            className={`inline-flex items-center gap-1.5 ${activeSlide.badgeBg} ${activeSlide.badgeTextColor} text-[11px] font-extrabold uppercase px-3 py-1 rounded-pill tracking-wider shadow-sm`}
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>{activeSlide.badge}</span>
-          </span>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+          {/* Left — Typography & CTAs */}
+          <div className="space-y-6 md:space-y-8 animate-fadeInUp">
+            {/* Freshness indicator */}
+            <div className="inline-flex items-center gap-2 bg-basil-light/60 border border-basil/10 px-4 py-2 rounded-2xl">
+              <div className="w-2 h-2 rounded-full bg-basil animate-livePulse" />
+              <span className="text-xs font-bold text-basil uppercase tracking-wider">Delivering in 10 min</span>
+            </div>
 
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black font-display text-white tracking-tight leading-tight max-w-xl whitespace-pre-line drop-shadow-md">
-            {activeSlide.headline}
-          </h1>
+            {/* Giant headline */}
+            <h1 className="font-display text-display-xl text-ink">
+              Fresh food.
+              <br />
+              <span className="text-gradient">Delivered better.</span>
+            </h1>
 
-          <p className="text-xs sm:text-sm text-white/90 leading-relaxed max-w-md font-medium drop-shadow">
-            {activeSlide.subtitle}
-          </p>
+            {/* Supporting text */}
+            <p className="text-base md:text-lg text-ink-400 leading-relaxed max-w-lg font-medium">
+              Handpicked groceries from local farms and trusted brands — 
+              at your doorstep before you finish making chai.
+            </p>
 
-          <div className="pt-2">
-            <Link href={activeSlide.ctaHref}>
-              <Button variant="primary" size="md" className="font-extrabold gap-2 shadow-pill hover:scale-105 active:scale-95 transition-all">
-                <span>{activeSlide.ctaText}</span>
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            </Link>
+            {/* CTAs */}
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <Link
+                href="/category/fresh-vegetables"
+                className="group inline-flex items-center gap-2.5 bg-ink hover:bg-ink-700 text-white px-7 py-4 rounded-2xl text-sm font-bold transition-all active:scale-[0.97] shadow-float hover:shadow-editorial"
+              >
+                <span>Shop fresh</span>
+                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+              <Link
+                href="#categories"
+                className="inline-flex items-center gap-2 text-ink-500 hover:text-ink px-5 py-4 rounded-2xl text-sm font-bold hover:bg-ink/[0.04] transition-all"
+              >
+                Explore categories
+              </Link>
+            </div>
+
+            {/* Trust indicators */}
+            <div className="flex flex-wrap items-center gap-5 pt-4">
+              {[
+                { icon: Clock, label: '10-min delivery' },
+                { icon: Leaf, label: 'Farm fresh' },
+                { icon: ShieldCheck, label: 'Quality assured' },
+              ].map((item) => (
+                <div key={item.label} className="flex items-center gap-2 text-xs text-ink-400 font-medium">
+                  <item.icon className="w-4 h-4 text-basil" />
+                  <span>{item.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Carousel Controls & Indicators Footer */}
-        <div className="pt-4 flex items-center justify-between">
-          {/* Slide Indicator Dots */}
-          <div className="flex items-center gap-2">
-            {HERO_SLIDES.map((slide, idx) => (
-              <button
-                key={slide.id}
-                onClick={() => setCurrentIndex(idx)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  idx === currentIndex
-                    ? 'w-8 bg-mango shadow-glow'
-                    : 'w-2 bg-white/40 hover:bg-white/70'
-                }`}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
+          {/* Right — Large hero image with floating product cards */}
+          <div className="relative hidden lg:block">
+            {/* Main hero image */}
+            <div className="relative w-full aspect-[4/5] max-w-lg mx-auto">
+              <div className="absolute inset-0 rounded-[2.5rem] overflow-hidden">
+                <Image
+                  src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=900&q=85"
+                  alt="Fresh fruits and vegetables"
+                  fill
+                  sizes="(max-width: 1024px) 0vw, 480px"
+                  className="object-cover img-reveal"
+                  priority
+                />
+                {/* Soft gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
+              </div>
+            </div>
+
+            {/* Floating product cards */}
+            {FLOATING_CARDS.map((card) => (
+              <div
+                key={card.name}
+                className={`absolute ${card.position} glass rounded-2xl px-3 py-2.5 shadow-glass border border-white/40 animate-float hover-lift cursor-default`}
+                style={{ animationDelay: `${FLOATING_CARDS.indexOf(card) * 0.6}s` }}
+              >
+                <div className="flex items-center gap-2.5">
+                  <span className="text-xl">{card.emoji}</span>
+                  <div>
+                    <div className="text-xs font-bold text-ink">{card.name}</div>
+                    <div className="text-[10px] font-mono font-bold text-basil">{card.price}</div>
+                  </div>
+                </div>
+              </div>
             ))}
-          </div>
-
-          {/* Previous / Next Arrow Controls */}
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={handlePrev}
-              className="w-8 h-8 rounded-full bg-black/40 hover:bg-black/70 backdrop-blur-md border border-white/20 text-white flex items-center justify-center transition-all active:scale-90"
-              aria-label="Previous Slide"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <button
-              type="button"
-              onClick={handleNext}
-              className="w-8 h-8 rounded-full bg-black/40 hover:bg-black/70 backdrop-blur-md border border-white/20 text-white flex items-center justify-center transition-all active:scale-90"
-              aria-label="Next Slide"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
           </div>
         </div>
       </div>

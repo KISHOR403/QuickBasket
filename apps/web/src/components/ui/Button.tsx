@@ -22,15 +22,15 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      'inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-basil/40 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none rounded-pill';
+      'inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-basil/30 active:scale-[0.97] disabled:opacity-50 disabled:pointer-events-none rounded-2xl';
 
     const variants = {
-      primary: 'bg-basil text-white hover:bg-basil-hover shadow-pill',
-      secondary: 'bg-basil-light text-basil hover:bg-basil-light/80 font-semibold',
+      primary: 'bg-basil text-white hover:bg-basil-hover shadow-pill font-bold',
+      secondary: 'bg-basil-light text-basil hover:bg-basil-light/80 font-bold',
       mango: 'bg-mango text-ink hover:bg-mango-hover font-bold shadow-sm',
-      beet: 'bg-beet text-white hover:bg-beet/90 font-semibold',
-      outline: 'border-2 border-mist text-ink hover:bg-mist/50',
-      ghost: 'text-ink hover:bg-mist/40',
+      beet: 'bg-beet text-white hover:bg-beet/90 font-bold',
+      outline: 'border-2 border-mist text-ink hover:bg-cream',
+      ghost: 'text-ink hover:bg-cream',
     };
 
     const sizes = {

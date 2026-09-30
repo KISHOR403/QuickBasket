@@ -1,118 +1,104 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import {
-  Milk,
-  Carrot,
-  Apple,
-  Wheat,
-  Cookie,
-  Croissant,
-  CupSoda,
-  Coffee,
-  Zap,
-  IceCream,
-  HeartPulse,
-  Sparkles,
-  Baby,
-  PawPrint,
-  Candy,
-  ShoppingBag,
-  LucideIcon,
-} from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 import { useCategoriesQuery } from '@quickbasket/api-client';
-import { SectionHeader } from '@/components/common/SectionHeader';
-
-const ICON_MAP: Record<string, LucideIcon> = {
-  Milk,
-  Carrot,
-  Apple,
-  Wheat,
-  Cookie,
-  Croissant,
-  CupSoda,
-  Coffee,
-  Zap,
-  IceCream,
-  HeartPulse,
-  Sparkles,
-  Baby,
-  PawPrint,
-  Candy,
-};
 
 export function CategoryGrid() {
   const { data: categories, isLoading } = useCategoriesQuery();
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (!scrollRef.current) return;
+    scrollRef.current.scrollBy({
+      left: direction === 'left' ? -320 : 320,
+      behavior: 'smooth',
+    });
+  };
 
   return (
-    <section>
-      <SectionHeader
-        eyebrow="Browse"
-        title="Shop by Category"
-        description="Find everything you need, organized for you."
-      />
+    <section id="categories" className="py-16 md:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section header */}
+        <div className="flex items-end justify-between gap-4 mb-8 md:mb-12">
+          <div>
+            <span className="text-xs font-bold uppercase tracking-[0.16em] text-basil mb-2 block">
+              Browse
+            </span>
+            <h2 className="font-display text-display-md text-ink">
+              Shop by category
+            </h2>
+          </div>
+          <div className="hidden sm:flex items-center gap-2">
+            <button
+              onClick={() => scroll('left')}
+              className="w-10 h-10 rounded-xl border border-mist bg-white hover:bg-cream text-ink-400 hover:text-ink flex items-center justify-center transition-all active:scale-95"
+              aria-label="Scroll categories left"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => scroll('right')}
+              className="w-10 h-10 rounded-xl border border-mist bg-white hover:bg-cream text-ink-400 hover:text-ink flex items-center justify-center transition-all active:scale-95"
+              aria-label="Scroll categories right"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
 
-      <div className="mt-6 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4">
-        {isLoading
-          ? Array.from({ length: 12 }).map((_, i) => (
-              <div
-                key={i}
-                className="flex flex-col items-center gap-2.5 p-4 rounded-card skeleton"
-              >
-                <div className="w-14 h-14 rounded-full bg-white/60" />
-                <div className="h-3 w-16 rounded-pill bg-white/60" />
-                <div className="h-2.5 w-10 rounded-pill bg-white/60" />
-              </div>
-            ))
-          : categories?.map((cat) => {
-              const IconComponent =
-                (cat.iconName && ICON_MAP[cat.iconName]) || ShoppingBag;
-
-              return (
+        {/* Horizontal scroll tiles */}
+        <div
+          ref={scrollRef}
+          className="flex gap-4 overflow-x-auto no-scrollbar scroll-snap-x pb-2"
+        >
+          {isLoading
+            ? Array.from({ length: 8 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="min-w-[200px] aspect-[3/4] rounded-2xl skeleton shrink-0"
+                />
+              ))
+            : categories?.map((cat, idx) => (
                 <Link
                   key={cat.id}
                   href={`/category/${cat.slug}`}
-                  className="group flex flex-col items-center gap-2.5 p-4 rounded-card border border-mist bg-surface shadow-card hover:shadow-float hover:-translate-y-1 hover:border-basil/30 transition-all duration-300 ease-smooth"
+                  className="group relative min-w-[180px] sm:min-w-[200px] aspect-[3/4] rounded-2xl overflow-hidden shrink-0 scroll-snap-start animate-fadeInUp"
+                  style={{ animationDelay: `${Math.min(idx, 7) * 60}ms` }}
                 >
-                  {/* Icon circle with category accent */}
-                  <div
-                    className="relative w-14 h-14 rounded-full flex items-center justify-center overflow-hidden ring-2 ring-white shadow-sm transition-transform duration-300 group-hover:scale-110"
-                    style={{ backgroundColor: cat.accentColor || '#E8F5E9' }}
-                  >
-                    {cat.imageUrl ? (
-                      <Image
-                        src={cat.imageUrl}
-                        alt={cat.name}
-                        fill
-                        sizes="56px"
-                        className="object-cover opacity-90 group-hover:opacity-100 transition-opacity"
-                      />
-                    ) : (
-                      <IconComponent className="w-6 h-6 text-basil" />
-                    )}
+                  {/* Category image */}
+                  <Image
+                    src={cat.imageUrl}
+                    alt={cat.name}
+                    fill
+                    sizes="200px"
+                    className="object-cover transition-transform duration-700 ease-smooth group-hover:scale-110"
+                  />
 
-                    {/* Icon overlay on image */}
-                    {cat.imageUrl && (
-                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                        <IconComponent className="w-5 h-5 text-white drop-shadow" />
+                  {/* Dark gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+                  {/* Content */}
+                  <div className="absolute inset-0 flex flex-col justify-end p-4">
+                    <div className="flex items-end justify-between">
+                      <div>
+                        <h3 className="text-sm font-bold text-white leading-tight mb-0.5">
+                          {cat.name}
+                        </h3>
+                        <span className="text-[11px] text-white/60 font-medium">
+                          {cat.itemCount} items
+                        </span>
                       </div>
-                    )}
+                      <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                        <ArrowUpRight className="w-4 h-4" />
+                      </div>
+                    </div>
                   </div>
-
-                  {/* Label */}
-                  <span className="text-[11px] sm:text-xs font-bold text-ink text-center leading-tight line-clamp-2 min-h-[28px] group-hover:text-basil transition-colors">
-                    {cat.name}
-                  </span>
-
-                  {/* Count pill */}
-                  <span className="text-[10px] font-semibold text-ink-400 bg-mist px-2 py-0.5 rounded-pill">
-                    {cat.itemCount} items
-                  </span>
                 </Link>
-              );
-            })}
+              ))}
+        </div>
       </div>
     </section>
   );
