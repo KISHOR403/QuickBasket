@@ -3,10 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Search, ShoppingBag, User, MapPin, Heart } from 'lucide-react';
+import { Search, ShoppingBag, User, MapPin } from 'lucide-react';
 import { LocationGate } from '@/components/common/LocationGate';
 import { useCartStore } from '@/store/cart';
 import { useUiStore } from '@/store/ui';
+import { useLocationStore } from '@/store/location';
 import { useHasMounted } from '@/lib/useHasMounted';
 import { formatCurrency } from '@quickbasket/utils';
 
@@ -14,6 +15,7 @@ export function Header() {
   const router = useRouter();
   const { getTotalItems, getItemTotal } = useCartStore();
   const { openCartDrawer, openLocationModal } = useUiStore();
+  const { city } = useLocationStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [scrolled, setScrolled] = useState(false);
 
@@ -36,108 +38,112 @@ export function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ease-smooth ${
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ease-out ${
         scrolled
-          ? 'glass border-b border-black/[0.04] shadow-glass'
+          ? 'bg-[#faf8f5]/85 backdrop-blur-md border-b border-ink/[0.04] shadow-[0_4px_24px_-8px_rgba(15,26,20,0.04)]'
           : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-18 gap-3">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-1.5 shrink-0 group">
-            <div className="w-8 h-8 rounded-xl bg-basil flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-              <span className="text-white font-display font-bold text-sm">Q</span>
-            </div>
-            <span className="font-display font-bold text-lg tracking-tight text-ink hidden sm:inline">
-              Quick<span className="text-basil">Basket</span>
+        <div className="flex items-center justify-between h-16 md:h-18 gap-3 sm:gap-6">
+          {/* Left: Small Refined Logo */}
+          <Link href="/" className="flex items-center gap-2 shrink-0 group focus:outline-none">
+            <span className="font-mono text-xs sm:text-[13px] tracking-[0.24em] font-bold text-ink uppercase group-hover:text-basil transition-colors">
+              QUICKBASKET
             </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-basil inline-block animate-pulseFast" />
           </Link>
 
-          {/* Search — Desktop */}
-          <form onSubmit={handleSearchSubmit} className="flex-1 max-w-md hidden md:block">
+          {/* Center: Large Search / Location Interaction */}
+          <form
+            onSubmit={handleSearchSubmit}
+            className="flex-1 max-w-xl mx-2 sm:mx-4 hidden sm:block"
+          >
             <div className="relative group">
               <input
+                id="header-search-input"
                 type="text"
-                placeholder="Search for groceries, brands..."
+                placeholder="Search for fruits, vegetables, milk..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-ink/[0.04] hover:bg-ink/[0.06] focus:bg-white border border-transparent focus:border-ink/[0.08] rounded-2xl py-2.5 pl-11 pr-4 text-sm font-medium text-ink transition-all placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-basil/10 focus:shadow-glass"
+                className="w-full bg-white/70 hover:bg-white focus:bg-white border border-ink/[0.08] focus:border-ink/30 rounded-full py-2 pl-10 pr-28 text-xs md:text-sm font-sans text-ink placeholder:text-ink-400 placeholder:font-normal focus:outline-none transition-all duration-200 shadow-[0_1px_3px_rgba(0,0,0,0.02)]"
               />
-              <Search className="w-4.5 h-4.5 text-ink-400 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors group-focus-within:text-basil" />
+              <Search className="w-4 h-4 text-ink-400 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors group-focus-within:text-ink" />
+
+              {/* In-bar contextual location trigger */}
+              <button
+                type="button"
+                onClick={openLocationModal}
+                className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-mono tracking-wider text-ink-600 hover:text-ink bg-ink/[0.04] hover:bg-ink/[0.08] transition-colors"
+                title="Change location"
+              >
+                <MapPin className="w-2.5 h-2.5 text-basil shrink-0" />
+                <span className="uppercase text-[10px] font-medium truncate max-w-[85px]">
+                  {city || 'Bengaluru'}
+                </span>
+              </button>
             </div>
           </form>
 
-          {/* Right Actions */}
-          <div className="flex items-center gap-1">
-            {/* Location */}
+          {/* Right: Location, Account, Cart */}
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+            {/* Location (desktop detailed view) */}
             <button
               type="button"
               onClick={openLocationModal}
-              className="hidden lg:flex items-center gap-1.5 px-3 py-2 rounded-xl hover:bg-ink/[0.04] transition-colors text-sm group cursor-pointer"
+              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg hover:bg-ink/[0.04] transition-colors text-xs text-ink-600 font-sans cursor-pointer"
               aria-label="Change delivery location"
             >
-              <MapPin className="w-4 h-4 text-basil" />
-              <span className="text-ink-500 text-xs">Delivering to</span>
+              <MapPin className="w-3.5 h-3.5 text-basil shrink-0" />
               <LocationGate variant="header" />
             </button>
-
-            {/* Wishlist */}
-            <Link
-              href="/account"
-              className="p-2.5 rounded-xl hover:bg-ink/[0.04] text-ink-500 hover:text-ink transition-colors hidden md:flex"
-              aria-label="Wishlist"
-            >
-              <Heart className="w-5 h-5" />
-            </Link>
 
             {/* Account */}
             <Link
               href="/account"
-              className="p-2.5 rounded-xl hover:bg-ink/[0.04] text-ink-500 hover:text-ink transition-colors"
+              className="p-2 rounded-lg hover:bg-ink/[0.04] text-ink-600 hover:text-ink transition-colors"
               aria-label="Account"
             >
-              <User className="w-5 h-5" />
+              <User className="w-4 h-4" />
             </Link>
 
-            {/* Cart */}
+            {/* Cart — Compact Editorial CTA */}
             <button
               onClick={openCartDrawer}
               aria-label="Open cart"
-              className="relative flex items-center gap-2 bg-ink hover:bg-ink-700 text-white pl-3 pr-4 py-2.5 rounded-2xl transition-all active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-basil/30 ml-1"
+              className="relative flex items-center gap-2 bg-ink hover:bg-ink-700 text-white px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider transition-all duration-200 active:scale-95 ml-1"
             >
-              <div className="relative">
-                <ShoppingBag className="w-4.5 h-4.5" />
-                {totalItems > 0 && (
-                  <span className="absolute -top-1.5 -right-2 bg-basil text-white font-mono font-bold text-[9px] w-4 h-4 rounded-full flex items-center justify-center animate-countUp">
-                    {totalItems}
-                  </span>
-                )}
-              </div>
+              <ShoppingBag className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline font-medium">Cart</span>
               {totalItems > 0 && (
-                <span className="text-xs font-mono font-bold hidden sm:inline">
-                  {formatCurrency(itemTotal)}
+                <span className="font-mono bg-basil text-white px-1.5 py-0.2 rounded-full text-[10px] font-bold">
+                  {totalItems}
                 </span>
-              )}
-              {totalItems === 0 && (
-                <span className="text-xs font-medium hidden sm:inline">Cart</span>
               )}
             </button>
           </div>
         </div>
 
-        {/* Mobile Search */}
-        <div className="md:hidden pb-3 -mt-1">
+        {/* Mobile Search — Minimal single hairline bar */}
+        <div className="sm:hidden pb-3">
           <form onSubmit={handleSearchSubmit}>
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search groceries..."
+                placeholder="Search for fruits, vegetables, milk..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-ink/[0.04] border border-transparent rounded-xl py-2.5 pl-10 pr-4 text-sm font-medium text-ink focus:outline-none placeholder:text-ink-400 focus:bg-white focus:border-ink/[0.08] focus:ring-2 focus:ring-basil/10 transition-all"
+                className="w-full bg-white/80 border border-ink/[0.08] rounded-full py-2 pl-9 pr-24 text-xs font-sans text-ink focus:outline-none focus:border-ink/30 placeholder:text-ink-400 shadow-sm"
               />
-              <Search className="w-4 h-4 text-ink-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-3.5 h-3.5 text-ink-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <button
+                type="button"
+                onClick={openLocationModal}
+                className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono tracking-wider text-ink-600 bg-ink/[0.04]"
+              >
+                <MapPin className="w-2.5 h-2.5 text-basil" />
+                <span className="truncate max-w-[65px] uppercase">{city || 'Bengaluru'}</span>
+              </button>
             </div>
           </form>
         </div>
@@ -145,3 +151,4 @@ export function Header() {
     </header>
   );
 }
+

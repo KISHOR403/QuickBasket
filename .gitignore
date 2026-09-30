@@ -34,4 +34,4 @@ yarn-error.log*
 .vscode/
 .idea/
 .claude/
-
+*.tsbuildinfo

@@ -9,6 +9,7 @@ import { ProductCarousel } from '@/components/product/ProductCarousel';
 import { FeaturedProducts } from '@/components/product/FeaturedProducts';
 import { SmartShopping } from '@/components/home/SmartShopping';
 import { PromoBanners } from '@/components/home/PromoBanners';
+import { PriceShelf } from '@/components/home/PriceShelf';
 import { WhyQuickBasket } from '@/components/home/WhyQuickBasket';
 import { Testimonials } from '@/components/home/Testimonials';
 import { DownloadApp } from '@/components/home/DownloadApp';
@@ -17,11 +18,6 @@ export default function HomePage() {
   const { data: products, isLoading: isProductsLoading } = useProductsQuery();
 
   const organicProducts = products?.filter((p) => p.isOrganic) || [];
-  const expressProducts = products?.filter((p) => p.isExpress) || [];
-  const affordableProducts = products?.filter((p) => {
-    const variant = p.variants.find((v) => v.id === p.defaultVariantId) || p.variants[0];
-    return variant.price < 200;
-  }) || [];
 
   return (
     <div className="pb-4">
@@ -43,10 +39,10 @@ export default function HomePage() {
         viewAllHref="/category/dairy-bread-eggs"
       />
 
-      {/* 5. Freshly Picked — asymmetric featured layout */}
+      {/* 5. Freshly Picked — editorial collection */}
       <FeaturedProducts
-        eyebrow="Direct from farms"
-        title="Freshly picked"
+        eyebrow="PICKED TODAY"
+        title="Fresh arrivals from local suppliers"
         products={organicProducts}
         isLoading={isProductsLoading}
       />
@@ -57,13 +53,10 @@ export default function HomePage() {
       {/* 7. Today's Drops — editorial deals */}
       <PromoBanners />
 
-      {/* 8. Under ₹199 — compact horizontal carousel */}
-      <ProductCarousel
-        eyebrow="Budget picks"
-        title="Under ₹199"
-        products={affordableProducts}
+      {/* 8. Under ₹100 — compact price shelf */}
+      <PriceShelf
+        products={products}
         isLoading={isProductsLoading}
-        cardSize="default"
       />
 
       {/* 9. Quality Pillars — trust storytelling */}

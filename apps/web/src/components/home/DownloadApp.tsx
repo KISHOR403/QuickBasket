@@ -1,141 +1,129 @@
 import React from 'react';
-import { Star, Shield, ArrowRight } from 'lucide-react';
+import { Star } from 'lucide-react';
 
 export function DownloadApp() {
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-12 md:py-16 selection:bg-basil/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-3xl bg-ink text-white">
-          {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-basil/15 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3" />
-          <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-mango/10 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/4" />
+        
+        {/* Dark Architectural Container */}
+        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-[#121915] text-white border border-white/10 shadow-lg">
+          
+          {/* Subtle Ambient Lighting */}
+          <div className="absolute top-0 right-1/4 w-96 h-96 bg-basil/15 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-emerald-600/10 rounded-full blur-[100px] pointer-events-none" />
 
-          {/* Floating grocery elements */}
-          <div className="absolute top-12 right-[15%] text-4xl opacity-20 animate-float" style={{ animationDelay: '0s' }}>🥬</div>
-          <div className="absolute top-1/3 right-[8%] text-3xl opacity-15 animate-float" style={{ animationDelay: '1s' }}>🍊</div>
-          <div className="absolute bottom-16 right-[20%] text-3xl opacity-15 animate-float" style={{ animationDelay: '2s' }}>🥛</div>
-
-          <div className="relative z-10 flex flex-col md:flex-row items-center gap-10 md:gap-16 p-8 sm:p-12 md:p-16 lg:p-20">
-            {/* Text content */}
-            <div className="flex-1 space-y-6 text-center md:text-left">
-              <h2 className="font-display text-display-lg text-white">
-                Your groceries,
-                <br />
-                <span className="text-gradient bg-gradient-to-r from-mango to-amber-300 bg-clip-text" style={{ WebkitTextFillColor: 'transparent' }}>
-                  one tap away.
-                </span>
-              </h2>
-
-              <p className="text-base text-white/60 leading-relaxed max-w-md mx-auto md:mx-0">
-                Download the QuickBasket app for exclusive deals, real-time tracking, 
-                and lightning-fast delivery — all in one place.
-              </p>
-
-              {/* Stats */}
-              <div className="flex items-center justify-center md:justify-start gap-6 pt-2">
-                <div className="flex items-center gap-1.5">
-                  <Star className="w-4 h-4 text-mango fill-mango" />
-                  <span className="text-sm font-bold">4.8</span>
-                  <span className="text-xs text-white/40">rating</span>
-                </div>
-                <div className="w-px h-4 bg-white/15" />
-                <div>
-                  <span className="text-sm font-bold">1M+</span>
-                  <span className="text-xs text-white/40 ml-1">downloads</span>
-                </div>
-                <div className="w-px h-4 bg-white/15" />
-                <div className="flex items-center gap-1">
-                  <Shield className="w-3.5 h-3.5 text-basil" />
-                  <span className="text-xs text-white/40">Secure</span>
-                </div>
+          {/* Grid Layout: Main Brand Statement (75-80%) + Small Phone (20-25%) */}
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 p-8 sm:p-12 lg:p-16">
+            
+            {/* ── Left: Large Brand Typography (75–80% weight) ── */}
+            <div className="flex-1 max-w-2xl text-center md:text-left space-y-5">
+              
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-[10px] font-mono uppercase tracking-[0.2em] text-white/80 border border-white/10">
+                <span>MOBILE APPLICATION / iOS & ANDROID</span>
               </div>
 
-              {/* App store buttons */}
-              <div className="flex items-center justify-center md:justify-start gap-3 pt-4">
+              {/* Exact user-requested brand statement */}
+              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight text-white leading-none">
+                YOUR GROCERIES.<br />
+                <span className="text-[#a7e8bd]">ONE TAP AWAY.</span>
+              </h2>
+
+              <p className="text-white/70 text-sm sm:text-base font-sans leading-relaxed max-w-xl mx-auto md:mx-0">
+                Download the QuickBasket app for exclusive daily harvest drops, instant live courier telemetry, and guaranteed 10-minute doorstep dispatch.
+              </p>
+
+              {/* App Store & Google Play Buttons */}
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2">
+                {/* App Store */}
                 <a
                   href="#"
-                  className="group inline-flex items-center gap-2.5 bg-white hover:bg-white/95 text-ink px-5 py-3 rounded-xl transition-all active:scale-95 hover:shadow-float"
+                  className="inline-flex items-center gap-3 bg-white text-ink hover:bg-white/90 px-5 py-2.5 rounded-xl transition-transform duration-200 active:scale-95 shadow-sm"
                 >
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
                   </svg>
                   <div className="text-left">
-                    <div className="text-[9px] font-medium text-ink-400 leading-none">Download on the</div>
-                    <div className="text-sm font-bold leading-tight">App Store</div>
+                    <div className="text-[9px] font-mono uppercase text-ink-500 leading-none">Available on</div>
+                    <div className="text-xs font-bold leading-tight">App Store</div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-ink-300 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                 </a>
 
+                {/* Google Play */}
                 <a
                   href="#"
-                  className="group inline-flex items-center gap-2.5 bg-white/10 hover:bg-white/15 border border-white/10 text-white px-5 py-3 rounded-xl transition-all active:scale-95 hover:shadow-float"
+                  className="inline-flex items-center gap-3 bg-white/10 hover:bg-white/15 border border-white/15 text-white px-5 py-2.5 rounded-xl transition-transform duration-200 active:scale-95 shadow-sm"
                 >
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-1.09l2.312 1.338a1 1 0 010 1.732l-2.123 1.229-2.532-2.532 2.343-1.767zM5.864 2.658L16.802 8.99l-2.303 2.303L5.864 2.658z" />
                   </svg>
                   <div className="text-left">
-                    <div className="text-[9px] font-medium text-white/40 leading-none">GET IT ON</div>
-                    <div className="text-sm font-bold leading-tight">Google Play</div>
+                    <div className="text-[9px] font-mono uppercase text-white/50 leading-none">Get it on</div>
+                    <div className="text-xs font-bold leading-tight">Google Play</div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-white/40 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                 </a>
               </div>
-            </div>
 
-            {/* Phone mockup */}
-            <div className="hidden md:flex items-center justify-center shrink-0">
-              <div className="relative w-56 h-[400px]">
-                {/* Phone frame */}
-                <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-b from-white/10 to-white/5 border border-white/15 shadow-editorial overflow-hidden">
-                  {/* Screen */}
-                  <div className="absolute inset-2.5 rounded-[2rem] bg-gradient-to-b from-basil to-basil-dark overflow-hidden">
-                    {/* Status bar */}
-                    <div className="flex items-center justify-between px-5 pt-3 text-[9px] font-bold text-white/70">
-                      <span>9:41</span>
-                      <div className="flex items-center gap-1">
-                        <div className="w-4 h-2 rounded-sm border border-white/50">
-                          <div className="w-3 h-1.5 rounded-sm bg-white/70 m-px" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* App content preview */}
-                    <div className="px-4 pt-5 pb-3">
-                      <div className="text-[10px] font-bold text-white/50">Delivering in</div>
-                      <div className="text-lg font-display font-bold text-white">10 minutes</div>
-                      <div className="mt-2 bg-white/12 rounded-xl px-3 py-2 text-[9px] text-white/50 font-medium">
-                        Search for &apos;paneer&apos;...
-                      </div>
-                    </div>
-
-                    {/* Mini category row */}
-                    <div className="px-4 flex gap-2 mt-1">
-                      {['🥛', '🥬', '🍎', '🍞'].map((emoji, i) => (
-                        <div key={i} className="w-10 h-10 rounded-xl bg-white/12 flex items-center justify-center text-sm">
-                          {emoji}
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Mini product grid */}
-                    <div className="px-4 mt-3 grid grid-cols-2 gap-2">
-                      {[1, 2, 3, 4].map((n) => (
-                        <div key={n} className="bg-white/8 rounded-xl p-2">
-                          <div className="w-full h-10 rounded-lg bg-white/8 mb-1.5" />
-                          <div className="h-1.5 w-3/4 rounded bg-white/15 mb-1" />
-                          <div className="h-1.5 w-1/2 rounded bg-white/10" />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+              {/* Ratings proof line */}
+              <div className="flex items-center justify-center md:justify-start gap-4 pt-1 font-mono text-[11px] text-white/50">
+                <div className="flex items-center gap-1 text-[#f59e0b]">
+                  <Star className="w-3.5 h-3.5 fill-[#f59e0b] stroke-[#f59e0b]" />
+                  <span className="font-bold text-white">4.8 Rating</span>
                 </div>
-
-                {/* Notch */}
-                <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-20 h-5 bg-ink rounded-b-2xl z-10" />
+                <span>·</span>
+                <span>1M+ Mobile Downloads</span>
               </div>
             </div>
+
+            {/* ── Right: Small Phone Mockup (~20–25% of section) ── */}
+            <div className="shrink-0 flex items-center justify-center md:justify-end">
+              <div className="relative w-36 sm:w-40 lg:w-44 h-[240px] sm:h-[270px] rounded-[1.8rem] bg-gradient-to-b from-white/20 to-white/5 p-1.5 border border-white/20 shadow-2xl">
+                
+                {/* Phone screen */}
+                <div className="w-full h-full rounded-[1.4rem] bg-[#16271c] overflow-hidden flex flex-col justify-between p-3 border border-white/10 relative">
+                  
+                  {/* Dynamic Island / Notch */}
+                  <div className="w-12 h-2.5 bg-black rounded-full mx-auto mb-2" />
+
+                  {/* App Screen Content Preview */}
+                  <div className="space-y-2">
+                    <div className="text-[8px] font-mono uppercase tracking-wider text-emerald-400 font-bold">
+                      10 MIN DISPATCH
+                    </div>
+                    <div className="font-display text-xs font-bold text-white leading-tight">
+                      Order arriving now
+                    </div>
+                    <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                      <div className="w-4/5 h-full bg-basil rounded-full" />
+                    </div>
+                  </div>
+
+                  {/* Mini Cart Thumbnails */}
+                  <div className="grid grid-cols-3 gap-1.5 py-2">
+                    {['🥬', '🥛', '🍞'].map((icon, idx) => (
+                      <div
+                        key={idx}
+                        className="aspect-square rounded-md bg-white/10 flex items-center justify-center text-sm border border-white/5"
+                      >
+                        {icon}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Mini Tracking Pill */}
+                  <div className="w-full py-1 rounded bg-white text-ink text-center text-[9px] font-mono font-bold uppercase tracking-wider">
+                    Track Rider →
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
           </div>
+
         </div>
+
       </div>
     </section>
   );

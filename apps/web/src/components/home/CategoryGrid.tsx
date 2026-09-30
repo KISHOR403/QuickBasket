@@ -1,104 +1,113 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 import { useCategoriesQuery } from '@quickbasket/api-client';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 export function CategoryGrid() {
   const { data: categories, isLoading } = useCategoriesQuery();
-  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const scroll = (direction: 'left' | 'right') => {
-    if (!scrollRef.current) return;
-    scrollRef.current.scrollBy({
-      left: direction === 'left' ? -320 : 320,
-      behavior: 'smooth',
-    });
-  };
+  const displayCategories = categories?.slice(0, 8) || [];
 
   return (
-    <section id="categories" className="py-16 md:py-24">
+    <section id="categories" className="py-16 md:py-24 bg-[#faf8f5]/60 selection:bg-basil/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
-        <div className="flex items-end justify-between gap-4 mb-8 md:mb-12">
+        
+        {/* Section Header — Editorial Directory Title */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 mb-8 border-b border-ink/[0.08]">
           <div>
-            <span className="text-xs font-bold uppercase tracking-[0.16em] text-basil mb-2 block">
-              Browse
-            </span>
-            <h2 className="font-display text-display-md text-ink">
-              Shop by category
+            <div className="font-mono text-[10px] tracking-[0.24em] text-basil uppercase font-bold flex items-center gap-2 mb-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-basil inline-block" />
+              <span>DEPARTMENT DIRECTORY</span>
+            </div>
+            <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-ink tracking-tight">
+              Shop by <span className="font-serif italic font-normal text-ink-600">category.</span>
             </h2>
           </div>
-          <div className="hidden sm:flex items-center gap-2">
-            <button
-              onClick={() => scroll('left')}
-              className="w-10 h-10 rounded-xl border border-mist bg-white hover:bg-cream text-ink-400 hover:text-ink flex items-center justify-center transition-all active:scale-95"
-              aria-label="Scroll categories left"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => scroll('right')}
-              className="w-10 h-10 rounded-xl border border-mist bg-white hover:bg-cream text-ink-400 hover:text-ink flex items-center justify-center transition-all active:scale-95"
-              aria-label="Scroll categories right"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
+
+          <div className="font-mono text-[10px] tracking-[0.2em] text-ink-400 uppercase hidden md:flex items-center gap-3">
+            <span>INDEX 01–08</span>
+            <span className="text-ink-300">/</span>
+            <span className="text-ink-700 font-semibold">ALL HARVEST CODES</span>
           </div>
         </div>
 
-        {/* Horizontal scroll tiles */}
-        <div
-          ref={scrollRef}
-          className="flex gap-4 overflow-x-auto no-scrollbar scroll-snap-x pb-2"
-        >
-          {isLoading
-            ? Array.from({ length: 8 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="min-w-[200px] aspect-[3/4] rounded-2xl skeleton shrink-0"
-                />
-              ))
-            : categories?.map((cat, idx) => (
-                <Link
-                  key={cat.id}
-                  href={`/category/${cat.slug}`}
-                  className="group relative min-w-[180px] sm:min-w-[200px] aspect-[3/4] rounded-2xl overflow-hidden shrink-0 scroll-snap-start animate-fadeInUp"
-                  style={{ animationDelay: `${Math.min(idx, 7) * 60}ms` }}
-                >
-                  {/* Category image */}
-                  <Image
-                    src={cat.imageUrl}
-                    alt={cat.name}
-                    fill
-                    sizes="200px"
-                    className="object-cover transition-transform duration-700 ease-smooth group-hover:scale-110"
-                  />
+        {/* Editorial Category Directory Grid — Asymmetric Two-Row Swiss Composition */}
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-l border-ink/[0.08]">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div
+                key={i}
+                className="p-6 sm:p-8 border-r border-b border-ink/[0.08] min-h-[220px] flex flex-col justify-between bg-white/40"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <Skeleton className="h-4 w-6" />
+                  <Skeleton className="h-3 w-12" />
+                </div>
+                <div>
+                  <Skeleton className="h-7 w-3/4 mb-2" />
+                  <Skeleton className="h-3 w-24" />
+                </div>
+                <div className="flex items-end justify-between pt-4 border-t border-ink/[0.05]">
+                  <Skeleton className="w-14 h-14 rounded-xs" />
+                  <Skeleton className="w-6 h-4" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-l border-ink/[0.08]">
+            {displayCategories.map((cat, idx) => (
+              <Link
+                key={cat.id}
+                href={`/category/${cat.slug}`}
+                className="group relative p-6 sm:p-7 lg:p-8 border-r border-b border-ink/[0.08] flex flex-col justify-between min-h-[220px] lg:min-h-[240px] bg-transparent hover:bg-white/90 transition-all duration-300"
+              >
+                {/* Top: Category Number & Metadata */}
+                <div className="flex items-center justify-between mb-4 sm:mb-6">
+                  <span className="font-mono text-xs font-bold text-basil tracking-widest">
+                    {String(idx + 1).padStart(2, '0')}
+                  </span>
+                  <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-ink-300 group-hover:text-ink-500 transition-colors">
+                    DEPT
+                  </span>
+                </div>
 
-                  {/* Dark gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                {/* Middle: Category Name (Primary Visual Element) & Product Count */}
+                <div className="mb-4 sm:mb-6">
+                  <h3 className="font-display text-xl sm:text-2xl lg:text-[1.65rem] font-bold text-ink tracking-tight uppercase leading-[1.05] transition-all duration-300 group-hover:translate-x-1 group-hover:text-basil">
+                    {cat.name}
+                  </h3>
+                  <p className="font-mono text-xs text-ink-400 mt-1.5 transition-colors group-hover:text-ink-600">
+                    {cat.itemCount || 35 + idx * 7} fresh picks
+                  </p>
+                </div>
 
-                  {/* Content */}
-                  <div className="absolute inset-0 flex flex-col justify-end p-4">
-                    <div className="flex items-end justify-between">
-                      <div>
-                        <h3 className="text-sm font-bold text-white leading-tight mb-0.5">
-                          {cat.name}
-                        </h3>
-                        <span className="text-[11px] text-white/60 font-medium">
-                          {cat.itemCount} items
-                        </span>
-                      </div>
-                      <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                        <ArrowUpRight className="w-4 h-4" />
-                      </div>
-                    </div>
+                {/* Bottom: Small Supporting Product Image & Moving Arrow */}
+                <div className="flex items-end justify-between pt-4 border-t border-ink/[0.06]">
+                  {/* Small Product Image — Supporting Element */}
+                  <div className="w-13 h-13 sm:w-14 sm:h-14 relative overflow-hidden bg-[#f4f2ec] border border-ink/[0.06] rounded-xs shrink-0">
+                    <Image
+                      src={cat.imageUrl}
+                      alt={cat.name}
+                      fill
+                      sizes="56px"
+                      className="object-cover transition-transform duration-500 ease-smooth group-hover:scale-110"
+                    />
                   </div>
-                </Link>
-              ))}
-        </div>
+
+                  {/* Minimal Arrow that shifts on hover */}
+                  <div className="flex items-center gap-1 font-mono text-base font-bold text-ink-400 group-hover:text-ink transition-all duration-300 group-hover:translate-x-1.5">
+                    <span>→</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+
       </div>
     </section>
   );
