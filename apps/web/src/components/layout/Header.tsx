@@ -99,10 +99,10 @@ export function Header() {
 
           {/* 3. Right: Account & Cart CTA */}
           <div className="flex items-center gap-1 sm:gap-2 md:gap-3 shrink-0">
-            {/* Account Icon */}
+            {/* Account Icon (Hidden on mobile devices, visible on desktop) */}
             <Link
               href="/account"
-              className="p-1.5 sm:p-2 rounded-lg hover:bg-ink/[0.04] text-ink-600 hover:text-ink transition-colors hidden sm:flex items-center justify-center"
+              className="p-1.5 sm:p-2 rounded-lg hover:bg-ink/[0.04] text-ink-600 hover:text-ink transition-colors hidden md:flex items-center justify-center"
               aria-label="Account"
             >
               <User className="w-4 h-4" />
