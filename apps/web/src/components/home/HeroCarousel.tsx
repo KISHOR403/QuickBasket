@@ -62,10 +62,12 @@ export function HeroSection() {
           2. Monumental Typographic Watermark (Interacts with composition)
       ───────────────────────────────────────────────────────────── */}
       <div
-        className="absolute top-14 sm:top-14 lg:top-8 left-3 sm:left-6 lg:left-12 select-none pointer-events-none z-0 font-display font-black text-[22vw] sm:text-[19vw] lg:text-[17vw] leading-[0.74] tracking-[-0.05em] text-ink/[0.035] lg:text-ink/[0.04] uppercase transition-opacity duration-1000"
+        className="absolute inset-x-0 top-32 sm:top-28 md:top-24 lg:top-[78px] xl:top-[70px] select-none pointer-events-none z-0 flex justify-center lg:justify-start lg:left-6 xl:left-10 2xl:left-14"
         aria-hidden="true"
       >
-        FRESH
+        <span className="font-display font-black text-[16.5vw] sm:text-[15vw] md:text-[13vw] lg:text-[12vw] xl:text-[11.5vw] 2xl:text-[155px] leading-none tracking-[-0.035em] text-ink/[0.06] sm:text-ink/[0.05] lg:text-ink/[0.045] uppercase whitespace-nowrap transition-all duration-700">
+          FRESH
+        </span>
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
