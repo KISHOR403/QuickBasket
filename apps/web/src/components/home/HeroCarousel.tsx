@@ -46,7 +46,7 @@ export function HeroSection() {
   return (
     <section
       ref={heroRef}
-      className="relative w-full min-h-[92vh] md:min-h-[96vh] bg-[#faf8f5] text-ink overflow-hidden flex flex-col justify-between pt-32 sm:pt-28 md:pt-24 pb-6 md:pb-8 selection:bg-basil/10"
+      className="relative w-full min-h-[92vh] md:min-h-[96vh] bg-[#faf8f5] text-ink overflow-hidden flex flex-col justify-between pt-20 sm:pt-22 md:pt-24 pb-6 md:pb-8 selection:bg-basil/10"
     >
       {/* ─────────────────────────────────────────────────────────────
           1. Swiss Grid Lines & Archival Metadata
@@ -62,7 +62,7 @@ export function HeroSection() {
           2. Monumental Typographic Watermark (Interacts with composition)
       ───────────────────────────────────────────────────────────── */}
       <div
-        className="absolute top-32 sm:top-20 lg:top-8 left-3 sm:left-6 lg:left-12 select-none pointer-events-none z-0 font-display font-black text-[22vw] sm:text-[19vw] lg:text-[17vw] leading-[0.74] tracking-[-0.05em] text-ink/[0.035] lg:text-ink/[0.04] uppercase transition-opacity duration-1000"
+        className="absolute top-14 sm:top-14 lg:top-8 left-3 sm:left-6 lg:left-12 select-none pointer-events-none z-0 font-display font-black text-[22vw] sm:text-[19vw] lg:text-[17vw] leading-[0.74] tracking-[-0.05em] text-ink/[0.035] lg:text-ink/[0.04] uppercase transition-opacity duration-1000"
         aria-hidden="true"
       >
         FRESH
