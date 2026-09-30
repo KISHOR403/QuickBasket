@@ -15,7 +15,7 @@ export function OrderTrackingClient({ orderId }: { orderId: string }) {
 
   if (!order) {
     return (
-      <div className="text-center py-16">
+      <div className="text-center px-4 pt-24 sm:pt-28 pb-16">
         <h2 className="text-lg font-bold text-ink">Order Not Found</h2>
         <Link href="/" className="text-basil hover:underline text-xs font-bold mt-2 block">
           Return to Home
@@ -25,7 +25,7 @@ export function OrderTrackingClient({ orderId }: { orderId: string }) {
   }
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 md:pt-28 space-y-6 pb-16">
       <Link href="/orders" className="inline-flex items-center gap-1.5 text-xs font-bold text-ink-500 hover:text-ink">
         <ArrowLeft className="w-4 h-4" /> Back to My Orders
       </Link>

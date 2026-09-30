@@ -20,7 +20,7 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="max-w-md mx-auto text-center py-16 space-y-4">
+      <div className="max-w-md mx-auto text-center px-4 pt-24 sm:pt-28 pb-16 space-y-4">
         <div className="w-20 h-20 bg-mist/60 rounded-full flex items-center justify-center mx-auto text-ink-400">
           <ShoppingBag className="w-10 h-10" />
         </div>
@@ -38,7 +38,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 md:pt-28 space-y-6 pb-16">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-black text-ink">Your Cart</h1>
         <button onClick={clearCart} className="text-xs font-bold text-beet hover:underline">

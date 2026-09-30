@@ -4,17 +4,17 @@ import React from 'react';
 import Link from 'next/link';
 import { Twitter, Instagram, Facebook, Youtube } from 'lucide-react';
 
-export function Footer() {
+export function CompactFooter() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full border-t border-ink/[0.06] bg-transparent mt-8 pt-8 pb-12 text-ink">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+    <footer className="w-full border-t border-ink/[0.06] bg-transparent mt-12 pt-8 pb-12 text-ink">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         {/* Brand & Statement */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
-            <Link href="/" className="inline-flex items-center gap-1.5 group select-none">
-              <span className="font-mono text-xs sm:text-[13px] tracking-[0.2em] font-bold text-ink uppercase group-hover:text-basil transition-colors">
+            <Link href="/" className="inline-flex items-center gap-1.5 group">
+              <span className="font-mono text-xs tracking-[0.2em] font-bold text-ink uppercase group-hover:text-basil transition-colors">
                 QUICKBASKET
               </span>
               <span className="w-1.5 h-1.5 rounded-full bg-basil inline-block" />
@@ -64,9 +64,12 @@ export function Footer() {
               Company
             </Link>
             <span className="text-ink/20">•</span>
-            <Link href="/about" className="hover:text-ink transition-colors">
+            <button
+              onClick={() => alert('Support: 1800-QUICK-GROCERY')}
+              className="hover:text-ink transition-colors"
+            >
               Support
-            </Link>
+            </button>
             <span className="text-ink/20">•</span>
             <Link href="/category/dairy-bread-eggs" className="hover:text-ink transition-colors">
               Shop

@@ -10,7 +10,7 @@ export default function OrderHistoryPage() {
   const { data: orders, isLoading } = useOrdersQuery();
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 md:pt-28 space-y-6 pb-16">
       <h1 className="text-2xl font-black text-ink">My Order History</h1>
 
       {isLoading ? (

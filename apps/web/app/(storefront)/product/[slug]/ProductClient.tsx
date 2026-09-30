@@ -22,7 +22,7 @@ export function ProductClient({ slug }: { slug: string }) {
 
   if (isLoading) {
     return (
-      <div className="max-w-4xl mx-auto space-y-6">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 md:pt-28 space-y-6 pb-16">
         <Skeleton className="h-8 w-1/3" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <Skeleton className="w-full aspect-square rounded-card" />
@@ -38,7 +38,7 @@ export function ProductClient({ slug }: { slug: string }) {
 
   if (!product || !selectedVariant) {
     return (
-      <div className="text-center py-16">
+      <div className="max-w-md mx-auto text-center px-4 pt-24 sm:pt-28 pb-16 space-y-4">
         <h2 className="text-xl font-bold text-ink">Product Not Found</h2>
         <Link href="/" className="text-basil hover:underline text-sm font-bold mt-2 block">
           Return to Home
@@ -54,7 +54,7 @@ export function ProductClient({ slug }: { slug: string }) {
   const discount = calculateDiscount(selectedVariant.price, selectedVariant.mrp);
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 md:pt-28 space-y-6 pb-16">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-xs font-semibold text-ink-400">
         <Link href="/" className="hover:text-ink">Home</Link>

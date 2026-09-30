@@ -49,7 +49,7 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div className="max-w-md mx-auto text-center py-16 space-y-4">
+      <div className="max-w-md mx-auto text-center px-4 pt-24 sm:pt-28 pb-16 space-y-4">
         <h2 className="text-xl font-bold text-ink">Your cart is empty</h2>
         <Button onClick={() => router.push('/')} variant="primary">
           Shop Now
@@ -59,7 +59,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 md:pt-28 space-y-6 pb-16">
       {/* Checkout Header */}
       <div className="flex items-center justify-between bg-surface rounded-card border border-mist p-4 shadow-card">
         <div className="flex items-center gap-3">

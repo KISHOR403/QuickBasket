@@ -37,19 +37,21 @@ function SearchContent() {
 
 export default function SearchPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="space-y-6">
-          <div className="skeleton h-24 w-full rounded-card" />
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
-            {[0, 1, 2, 3, 4].map((n) => (
-              <div key={n} className="skeleton h-56 w-full rounded-card" />
-            ))}
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 md:pt-28 pb-16">
+      <Suspense
+        fallback={
+          <div className="space-y-6">
+            <div className="skeleton h-24 w-full rounded-card" />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+              {[0, 1, 2, 3, 4].map((n) => (
+                <div key={n} className="skeleton h-56 w-full rounded-card" />
+              ))}
+            </div>
           </div>
-        </div>
-      }
-    >
-      <SearchContent />
-    </Suspense>
+        }
+      >
+        <SearchContent />
+      </Suspense>
+    </div>
   );
 }
