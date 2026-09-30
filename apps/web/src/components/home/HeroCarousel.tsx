@@ -46,7 +46,7 @@ export function HeroSection() {
   return (
     <section
       ref={heroRef}
-      className="relative w-full min-h-[92vh] md:min-h-[96vh] bg-[#faf8f5] text-ink overflow-hidden flex flex-col justify-between pt-20 md:pt-24 pb-6 md:pb-8 selection:bg-basil/10"
+      className="relative w-full min-h-[92vh] md:min-h-[96vh] bg-[#faf8f5] text-ink overflow-hidden flex flex-col justify-between pt-32 sm:pt-28 md:pt-24 pb-6 md:pb-8 selection:bg-basil/10"
     >
       {/* ─────────────────────────────────────────────────────────────
           1. Swiss Grid Lines & Archival Metadata
@@ -62,7 +62,7 @@ export function HeroSection() {
           2. Monumental Typographic Watermark (Interacts with composition)
       ───────────────────────────────────────────────────────────── */}
       <div
-        className="absolute top-10 sm:top-14 lg:top-8 left-3 sm:left-6 lg:left-12 select-none pointer-events-none z-0 font-display font-black text-[22vw] sm:text-[19vw] lg:text-[17vw] leading-[0.74] tracking-[-0.05em] text-ink/[0.045] lg:text-ink/[0.04] uppercase transition-opacity duration-1000"
+        className="absolute top-32 sm:top-20 lg:top-8 left-3 sm:left-6 lg:left-12 select-none pointer-events-none z-0 font-display font-black text-[22vw] sm:text-[19vw] lg:text-[17vw] leading-[0.74] tracking-[-0.05em] text-ink/[0.035] lg:text-ink/[0.04] uppercase transition-opacity duration-1000"
         aria-hidden="true"
       >
         FRESH
@@ -95,7 +95,7 @@ export function HeroSection() {
           {/* Left Column: 20-35% Editorial Typography & Intentional Interaction */}
           <div className="lg:col-span-5 xl:col-span-5 relative z-20 pt-2 lg:pt-0">
             {/* Contextual Delivery Indicator */}
-            <div className="inline-flex items-center gap-3 mb-6 lg:mb-8 bg-[#faf8f5]/80 backdrop-blur-xs py-1 pr-3">
+            <div className="inline-flex items-center gap-2.5 mb-6 lg:mb-8 bg-[#faf8f5]/90 backdrop-blur-xs py-1.5 px-3 rounded-xl border border-ink/[0.08] shadow-xs">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-basil opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-basil" />
