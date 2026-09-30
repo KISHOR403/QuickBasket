@@ -29,7 +29,6 @@ export function Header() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const mobileSearchInputRef = useRef<HTMLInputElement>(null);
 
   const mounted = useHasMounted();
   const totalItems = mounted ? getTotalItems() : 0;
@@ -48,13 +47,13 @@ export function Header() {
         if (window.innerWidth >= 768) {
           searchInputRef.current?.focus();
         } else {
-          mobileSearchInputRef.current?.focus();
+          router.push('/search');
         }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [router]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -217,24 +216,6 @@ export function Header() {
             </button>
           </div>
         </div>
-
-        {/* ROW 2: Mobile Search Row — Full width, no collisions, clean alignment */}
-        <div className="md:hidden pb-3 pt-0.5">
-          <form onSubmit={handleSearchSubmit}>
-            <div className="relative group">
-              <input
-                ref={mobileSearchInputRef}
-                type="text"
-                placeholder="Search groceries, fruits, milk, snacks..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white border border-ink/[0.1] focus:border-basil/50 rounded-xl py-2 pl-9 pr-4 text-xs font-sans text-ink placeholder:text-ink-400 focus:outline-none shadow-xs transition-all"
-              />
-              <Search className="w-3.5 h-3.5 text-ink-400 absolute left-3 top-1/2 -translate-y-1/2 transition-colors group-focus-within:text-basil" />
-            </div>
-          </form>
-        </div>
-
       </div>
     </header>
   );

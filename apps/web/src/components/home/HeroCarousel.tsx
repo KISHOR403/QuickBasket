@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useLocationStore } from '@/store/location';
 import { useCartStore } from '@/store/cart';
 import { useUiStore } from '@/store/ui';
@@ -9,6 +10,7 @@ import { useHasMounted } from '@/lib/useHasMounted';
 import { ShoppingBag } from 'lucide-react';
 
 export function HeroSection() {
+  const router = useRouter();
   const { city } = useLocationStore();
   const { getTotalItems } = useCartStore();
   const { openCartDrawer } = useUiStore();
@@ -35,9 +37,11 @@ export function HeroSection() {
 
   const handleFocusSearch = () => {
     const input = document.getElementById('header-search-input') as HTMLInputElement | null;
-    if (input) {
+    if (input && window.innerWidth >= 768) {
       input.focus();
       input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      router.push('/search');
     }
   };
 
