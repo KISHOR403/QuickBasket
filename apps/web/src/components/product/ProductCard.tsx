@@ -33,10 +33,10 @@ export function ProductCard({ product, size = 'default' }: ProductCardProps) {
   return (
     <div
       className={cn(
-        'group relative bg-white rounded-2xl transition-all duration-500 ease-smooth flex flex-col overflow-hidden',
+        'group relative bg-white rounded-2xl transition-all duration-500 ease-smooth flex flex-col overflow-hidden border border-transparent',
         isLarge
-          ? 'shadow-card hover:shadow-editorial'
-          : 'hover:shadow-float',
+          ? 'shadow-card hover:shadow-editorial hover:border-mist'
+          : 'hover:shadow-float hover:border-mist',
         isCompact && 'flex-row items-center gap-3 p-3 rounded-xl'
       )}
     >
@@ -56,7 +56,7 @@ export function ProductCard({ product, size = 'default' }: ProductCardProps) {
             ? 'aspect-[4/5] rounded-t-2xl'
             : isCompact
               ? 'w-20 h-20 rounded-xl shrink-0'
-              : 'aspect-square rounded-t-2xl'
+              : 'aspect-[5/4] rounded-t-2xl'
         )}
       >
         <Image
@@ -138,7 +138,9 @@ export function ProductCard({ product, size = 'default' }: ProductCardProps) {
               <button
                 onClick={() => addItem(product, variant, 1)}
                 className={cn(
-                  'flex items-center justify-center rounded-xl border-2 border-basil text-basil hover:bg-basil hover:text-white font-bold transition-all active:scale-95',
+                  'flex items-center justify-center rounded-xl border-2 border-basil text-basil font-bold transition-all active:scale-95',
+                  'hover:bg-basil hover:text-white',
+                  !isCompact && 'group-hover:bg-basil group-hover:text-white',
                   isCompact
                     ? 'w-8 h-8'
                     : 'gap-1 px-4 py-2 text-xs'
