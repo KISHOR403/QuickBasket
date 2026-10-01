@@ -21,6 +21,82 @@ importers:
         specifier: ^5.4.5
         version: 5.9.3
 
+  apps/admin:
+    dependencies:
+      '@hookform/resolvers':
+        specifier: ^3.3.4
+        version: 3.10.0(react-hook-form@7.86.0(react@18.3.1))
+      '@quickbasket/api-client':
+        specifier: workspace:*
+        version: link:../../packages/api-client
+      '@quickbasket/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+      '@quickbasket/mocks':
+        specifier: workspace:*
+        version: link:../../packages/mocks
+      '@quickbasket/types':
+        specifier: workspace:*
+        version: link:../../packages/types
+      '@quickbasket/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
+      '@quickbasket/validation':
+        specifier: workspace:*
+        version: link:../../packages/validation
+      '@tanstack/react-query':
+        specifier: ^5.28.0
+        version: 5.101.4(react@18.3.1)
+      clsx:
+        specifier: ^2.1.0
+        version: 2.1.1
+      lucide-react:
+        specifier: ^0.359.0
+        version: 0.359.0(react@18.3.1)
+      next:
+        specifier: ^14.2.3
+        version: 14.2.35(@babel/core@7.29.7(supports-color@8.1.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-hook-form:
+        specifier: ^7.51.1
+        version: 7.86.0(react@18.3.1)
+      tailwind-merge:
+        specifier: ^2.2.2
+        version: 2.6.1
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+      zustand:
+        specifier: ^4.5.2
+        version: 4.5.7(@types/react@18.2.79)(react@18.3.1)
+    devDependencies:
+      '@types/node':
+        specifier: ^20.11.30
+        version: 20.19.43
+      '@types/react':
+        specifier: ^18.2.67
+        version: 18.2.79
+      '@types/react-dom':
+        specifier: ^18.2.22
+        version: 18.3.7(@types/react@18.2.79)
+      autoprefixer:
+        specifier: ^10.4.19
+        version: 10.5.4(postcss@8.5.26)
+      postcss:
+        specifier: ^8.4.38
+        version: 8.5.26
+      tailwindcss:
+        specifier: ^3.4.1
+        version: 3.4.19(yaml@2.9.0)
+      typescript:
+        specifier: ^5.4.5
+        version: 5.9.3
+
   apps/mobile:
     dependencies:
       '@quickbasket/api-client':

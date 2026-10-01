@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Noto+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=clash-display@600,700,800&f[]=satoshi@400,500,700,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-clash: 'Clash Display', sans-serif;
+    --font-satoshi: 'Satoshi', sans-serif;
+    --font-space: 'Space Grotesk', monospace;
+    --font-noto: 'Noto Sans', sans-serif;
+
+    /* Admin specific semantic tokens */
+    --admin-bg: #fbfaf7;
+    --admin-surface: #ffffff;
+    --admin-border: #eae8e1;
+    --admin-border-subtle: #f0eee8;
+    --admin-ink: #0f1a14;
+    --admin-muted: #5e6b63;
+    --admin-forest: #144d31;
+    --admin-basil: #1a6b42;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--admin-bg);
+    color: var(--admin-ink);
+    @apply font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight text-ink;
+  }
+
+  ::selection {
+    background-color: rgba(26, 107, 66, 0.15);
+    color: #0f1a14;
+  }
+}
+
+/* Custom minimal scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d8d4c9;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #b5b0a3;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
