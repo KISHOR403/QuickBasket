@@ -25,7 +25,7 @@ export function MobileNav() {
   ];
 
   return (
-    <nav className="sm:hidden fixed bottom-0 left-0 right-0 z-40 glass border-t border-black/[0.04] py-2 px-4">
+    <nav className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#f8f6ef] border-t border-[#264c3c]/15 py-2 px-4">
       <div className="flex items-center justify-around">
         {navItems.map((item) => {
           const Icon = item.icon;

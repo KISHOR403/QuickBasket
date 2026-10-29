@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 
 export interface ProductCardProps {
   product: Product;
-  size?: 'default' | 'large' | 'compact';
+  size?: 'default' | 'large' | 'compact' | 'hero';
 }
 
 export function ProductCard({ product, size = 'default' }: ProductCardProps) {
@@ -29,15 +29,19 @@ export function ProductCard({ product, size = 'default' }: ProductCardProps) {
   const discountPercent = calculateDiscount(variant.price, variant.mrp);
   const isLarge = size === 'large';
   const isCompact = size === 'compact';
+  const isHero = size === 'hero';
+  const stockLimit = Math.max(0, variant.stockCount);
+  const canAdd = variant.inStock && stockLimit > 0;
 
   return (
     <div
       className={cn(
-        'group relative bg-white rounded-2xl transition-all duration-500 ease-smooth flex flex-col overflow-hidden border border-transparent',
+        'group relative bg-[#fffefa] rounded-sm transition-all duration-300 ease-smooth flex flex-col overflow-hidden border border-mist',
         isLarge
           ? 'shadow-card hover:shadow-editorial hover:border-mist'
           : 'hover:shadow-float hover:border-mist',
-        isCompact && 'flex-row items-center gap-3 p-3 rounded-xl'
+        isCompact && 'flex-row items-center gap-3 p-3 rounded-xl',
+        isHero && 'qb-product-card-hero'
       )}
     >
       {/* Discount tag */}
@@ -52,11 +56,14 @@ export function ProductCard({ product, size = 'default' }: ProductCardProps) {
         href={`/product/${product.slug}`}
         className={cn(
           'block relative overflow-hidden bg-cream/50',
-          isLarge
-            ? 'aspect-[4/5] rounded-t-2xl'
-            : isCompact
-              ? 'w-20 h-20 rounded-xl shrink-0'
-              : 'aspect-[5/4] rounded-t-2xl'
+          isHero
+            ? 'aspect-[5/4]'
+            : isLarge
+              ? 'aspect-[4/5] rounded-t-2xl'
+              : isCompact
+                ? 'w-20 h-20 rounded-xl shrink-0'
+                : 'aspect-[5/4] rounded-t-2xl',
+          'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b56c52]'
         )}
       >
         <Image
@@ -79,7 +86,7 @@ export function ProductCard({ product, size = 'default' }: ProductCardProps) {
         isCompact ? 'min-w-0 flex-1' : 'p-4'
       )}>
         {/* Brand */}
-        {!isCompact && (
+        {!isCompact && !isHero && (
           <span className="text-[10px] font-bold uppercase tracking-wider text-ink-400 mb-1">
             {product.brand}
           </span>
@@ -89,8 +96,8 @@ export function ProductCard({ product, size = 'default' }: ProductCardProps) {
         <Link
           href={`/product/${product.slug}`}
           className={cn(
-            'font-bold text-ink hover:text-basil transition-colors leading-tight',
-            isLarge ? 'text-base mb-1' : isCompact ? 'text-xs line-clamp-1' : 'text-sm line-clamp-2 mb-1 min-h-[36px]'
+            'font-bold text-ink hover:text-basil transition-colors leading-tight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b56c52]',
+            isLarge ? 'text-base mb-1' : isCompact ? 'text-xs line-clamp-1' : isHero ? 'text-xs line-clamp-2 mb-1 min-h-[32px]' : 'text-sm line-clamp-2 mb-1 min-h-[36px]'
           )}
         >
           {product.name}
@@ -99,7 +106,7 @@ export function ProductCard({ product, size = 'default' }: ProductCardProps) {
         {/* Variant */}
         <div className={cn(
           'text-ink-400 font-medium',
-          isCompact ? 'text-[10px]' : 'text-[11px] mb-2'
+          isCompact || isHero ? 'text-[10px]' : 'text-[11px] mb-2'
         )}>
           {variant.name}
         </div>
@@ -121,7 +128,7 @@ export function ProductCard({ product, size = 'default' }: ProductCardProps) {
           <div className="flex items-baseline gap-1.5">
             <span className={cn(
               'font-mono font-bold text-ink',
-              isLarge ? 'text-lg' : isCompact ? 'text-sm' : 'text-sm'
+              isLarge ? 'text-lg' : isCompact || isHero ? 'text-xs' : 'text-sm'
             )}>
               {formatCurrency(variant.price)}
             </span>
@@ -134,36 +141,42 @@ export function ProductCard({ product, size = 'default' }: ProductCardProps) {
 
           {/* Add / Stepper */}
           <div className={cn(isCompact ? 'shrink-0' : 'shrink-0')}>
-            {quantity === 0 ? (
+            {!canAdd ? (
+              <span className="px-2 py-1 text-[10px] font-medium text-ink-400" aria-label="Out of stock">Unavailable</span>
+            ) : quantity === 0 ? (
               <button
+                type="button"
                 onClick={() => addItem(product, variant, 1)}
                 className={cn(
-                  'flex items-center justify-center rounded-xl border-2 border-basil text-basil font-bold transition-all active:scale-95',
+                  'flex items-center justify-center rounded-md border border-basil text-basil font-bold transition-all active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b56c52]',
                   'hover:bg-basil hover:text-white',
-                  !isCompact && 'group-hover:bg-basil group-hover:text-white',
+                  !isCompact && !isHero && 'group-hover:bg-basil group-hover:text-white',
                   isCompact
                     ? 'w-8 h-8'
-                    : 'gap-1 px-4 py-2 text-xs'
+                    : isHero ? 'gap-1 px-2.5 py-1.5 text-[10px]' : 'gap-1 px-4 py-2 text-xs'
                 )}
-                aria-label="Add to cart"
+                aria-label={`Add ${product.name} to cart`}
               >
                 <Plus className={cn(isCompact ? 'w-4 h-4' : 'w-3.5 h-3.5')} />
                 {!isCompact && <span>Add</span>}
               </button>
             ) : (
-              <div className="inline-flex items-center bg-basil text-white rounded-xl overflow-hidden">
+              <div className="inline-flex items-center bg-basil text-white rounded-md overflow-hidden">
                 <button
+                  type="button"
                   onClick={() => updateQuantity(product.id, variant.id, quantity - 1)}
-                  className="w-8 h-8 flex items-center justify-center hover:bg-basil-hover transition-colors active:scale-90"
-                  aria-label="Decrease quantity"
+                  className="w-8 h-8 flex items-center justify-center hover:bg-basil-hover transition-colors active:scale-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  aria-label={`Decrease ${product.name} quantity`}
                 >
                   <Minus className="w-3.5 h-3.5" />
                 </button>
-                <span className="w-6 text-center text-xs font-mono font-bold">{quantity}</span>
+                <span className="w-6 text-center text-xs font-mono font-bold" aria-live="polite" aria-label={`${quantity} ${product.name} in cart`}>{quantity}</span>
                 <button
+                  type="button"
                   onClick={() => addItem(product, variant, 1)}
-                  className="w-8 h-8 flex items-center justify-center hover:bg-basil-hover transition-colors active:scale-90"
-                  aria-label="Increase quantity"
+                  disabled={quantity >= stockLimit}
+                  className="w-8 h-8 flex items-center justify-center hover:bg-basil-hover transition-colors active:scale-90 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  aria-label={`Increase ${product.name} quantity`}
                 >
                   <Plus className="w-3.5 h-3.5" />
                 </button>

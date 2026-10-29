@@ -4,13 +4,13 @@ import './globals.css';
 import { ClientProviders } from '@/components/providers/ClientProviders';
 
 export const metadata: Metadata = {
-  title: 'QuickBasket — Fresh Groceries in 10 Minutes',
+  title: 'QuickBasket — Good food, close to home',
   description:
-    'Order fresh milk, organic vegetables, snacks, staples and local kirana favorites delivered in 10-15 minutes. Premium grocery delivery reimagined.',
+    'Shop fresh produce, pantry staples and everyday groceries with QuickBasket.',
 };
 
 export const viewport: Viewport = {
-  themeColor: '#1a6b42',
+  themeColor: '#264c3c',
 };
 
 export default function RootLayout({

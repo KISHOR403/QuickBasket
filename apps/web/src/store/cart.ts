@@ -23,6 +23,9 @@ export const useCartStore = create<CartStoreState>()(
       items: [],
 
       addItem: (product, variant, qty = 1) => {
+        const stockLimit = variant.inStock ? Math.max(0, Math.floor(variant.stockCount)) : 0;
+        if (stockLimit === 0 || qty <= 0) return;
+
         set((state) => {
           const existingIndex = state.items.findIndex(
             (item) => item.productId === product.id && item.variantId === variant.id
@@ -30,7 +33,10 @@ export const useCartStore = create<CartStoreState>()(
 
           if (existingIndex > -1) {
             const updatedItems = [...state.items];
-            updatedItems[existingIndex].quantity += qty;
+            updatedItems[existingIndex].quantity = Math.min(
+              updatedItems[existingIndex].quantity + Math.floor(qty),
+              stockLimit
+            );
             return { items: updatedItems };
           }
 
@@ -39,7 +45,7 @@ export const useCartStore = create<CartStoreState>()(
             variantId: variant.id,
             product,
             selectedVariant: variant,
-            quantity: qty,
+            quantity: Math.min(Math.floor(qty), stockLimit),
             vendorId: product.vendorId,
           };
 
@@ -56,15 +62,28 @@ export const useCartStore = create<CartStoreState>()(
       },
 
       updateQuantity: (productId, variantId, quantity) => {
-        if (quantity <= 0) {
+        if (Math.floor(quantity) <= 0) {
           get().removeItem(productId, variantId);
           return;
         }
 
+        const existingItem = get().items.find(
+          (item) => item.productId === productId && item.variantId === variantId
+        );
+        if (!existingItem) return;
+        const stockLimit = existingItem.selectedVariant.inStock
+          ? Math.max(0, Math.floor(existingItem.selectedVariant.stockCount))
+          : 0;
+        if (stockLimit === 0) {
+          get().removeItem(productId, variantId);
+          return;
+        }
+        const safeQuantity = Math.min(Math.floor(quantity), stockLimit);
+
         set((state) => ({
           items: state.items.map((item) => {
             if (item.productId === productId && item.variantId === variantId) {
-              return { ...item, quantity };
+              return { ...item, quantity: safeQuantity };
             }
             return item;
           }),

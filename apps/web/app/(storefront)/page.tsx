@@ -15,14 +15,17 @@ import { Testimonials } from '@/components/home/Testimonials';
 import { DownloadApp } from '@/components/home/DownloadApp';
 
 export default function HomePage() {
-  const { data: products, isLoading: isProductsLoading } = useProductsQuery();
+  const { data: products, isLoading: isProductsLoading, isError: isProductsError } = useProductsQuery();
 
   const organicProducts = products?.filter((p) => p.isOrganic) || [];
 
   return (
-    <div className="pb-4">
+    <div className="qb-homepage pb-4">
       {/* 1. Editorial Hero */}
-      <HeroSection />
+      <HeroSection products={products} isLoading={isProductsLoading} isError={isProductsError} />
+
+      {/* Evidence-led shopping information */}
+      <WhyQuickBasket />
 
       {/* 2. Category Discovery — horizontal scroll tiles */}
       <CategoryGrid />
@@ -58,9 +61,6 @@ export default function HomePage() {
         products={products}
         isLoading={isProductsLoading}
       />
-
-      {/* 9. Quality Pillars — trust storytelling */}
-      <WhyQuickBasket />
 
       {/* 10. Testimonials — magazine style */}
       <Testimonials />
